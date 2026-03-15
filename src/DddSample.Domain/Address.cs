@@ -1,6 +1,8 @@
-﻿namespace DddSample.Domain;
+﻿using System.Diagnostics.CodeAnalysis;
 
-public readonly struct Address
+namespace DddSample.Domain;
+
+public readonly struct Address : IEquatable<Address>
 {
   private readonly string _address;
 
@@ -14,8 +16,21 @@ public readonly struct Address
     return new Address(value);
   }
 
+  public override int GetHashCode() => _address.GetHashCode();
+
+  public override bool Equals([NotNullWhen(true)] object? obj)
+  {
+    if (obj == null) return false;
+    if (obj is not Address other) return false;
+    return Equals(this, other);
+  }
+
+  public bool Equals(Address other) => _address == other._address;
+
   public override string ToString() => _address;
 
   public static implicit operator string(Address address) => address.ToString();
+  public static bool operator ==(Address left, Address right) => left.Equals(right);
+  public static bool operator !=(Address left, Address right) => !left.Equals(right);
 }
 
