@@ -1,6 +1,6 @@
 ﻿namespace DddSample.Domain;
 
-public readonly struct WeeklyOpeningHours
+public sealed class WeeklyOpeningHours
 {
   public WeeklyOpeningHours(bool worksOnHoliday = false, TimePeriod mon = default, TimePeriod tue = default, TimePeriod wed = default, TimePeriod thu = default, TimePeriod fri = default, TimePeriod sat = default, TimePeriod sun = default)
   {
