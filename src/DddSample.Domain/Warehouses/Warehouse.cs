@@ -1,6 +1,6 @@
-﻿namespace DddSample.Domain;
+﻿namespace DddSample.Domain.Warehouses;
 
-public sealed class Warehouse : AggregateRoot
+public sealed class Warehouse
 {
   public Warehouse(WarehouseId id, WarehouseAddress address, WarehouseContact contact)
   {

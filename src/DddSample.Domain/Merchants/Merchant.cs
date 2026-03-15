@@ -1,4 +1,4 @@
-﻿namespace DddSample.Domain;
+﻿namespace DddSample.Domain.Merchants;
 
 public sealed class Merchant : AggregateRoot
 {

@@ -1,4 +1,4 @@
-﻿namespace DddSample.Domain;
+﻿namespace DddSample.Domain.DeliveryPoints;
 
 public sealed class DeliveryPointAddress
 {

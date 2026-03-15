@@ -1,4 +1,4 @@
-﻿namespace DddSample.Domain;
+﻿namespace DddSample.Domain.Warehouses;
 
 public sealed class WarehouseContact
 {
