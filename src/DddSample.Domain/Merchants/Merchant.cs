@@ -1,6 +1,6 @@
 ﻿namespace DddSample.Domain.Merchants;
 
-public sealed class Merchant : AggregateRoot
+public sealed class Merchant
 {
   public Merchant(MerchantId id, string name)
   {
