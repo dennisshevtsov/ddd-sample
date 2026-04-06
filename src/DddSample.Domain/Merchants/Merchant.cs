@@ -2,7 +2,7 @@
 
 public sealed class Merchant
 {
-  public Merchant(MerchantId id, string name)
+  public Merchant(MerchantId id, string? name = null)
   {
     Id = id;
     Name = name;
