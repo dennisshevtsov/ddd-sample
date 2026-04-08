@@ -2,7 +2,7 @@
 
 namespace DddSample.Infrastructure;
 
-internal sealed class DddSampleDbContext : DbContext
+internal sealed class DddSampleDbContext(DbContextOptions options) : DbContext(options)
 {
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

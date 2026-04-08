@@ -1,27 +1,26 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.Merchants;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Testing.Platform.Services;
 
 namespace DddSample.Test;
 
 [TestClass]
+[TestCategory("Integration")]
 public sealed class MerchantTest
 {
-  private readonly DbContext _context1;
-  private readonly DbContext _context2;
-
-  public MerchantTest()
-  {
-    WebApplicationFactory<Program> factory = new();
-    _context1 = factory.Services.GetRequiredService<DbContext>();
-    _context2 = factory.Services.GetRequiredService<DbContext>();
-  }
+  private IServiceScope _scope;
+  private DbContext _context1;
+  private DbContext _context2;
 
   [TestInitialize]
   public async Task InitializeAsync()
   {
+    DddSampleWebApplicationFactory factory = new();
+
+    _scope = factory.Services.CreateScope();
+    _context1 = _scope.ServiceProvider.GetRequiredService<DbContext>();
+    _context2 = _scope.ServiceProvider.GetRequiredService<DbContext>();
+
     await _context1.Database.EnsureCreatedAsync();
   }
 
@@ -29,8 +28,7 @@ public sealed class MerchantTest
   public async Task CleanupAsync()
   {
     await _context1.Database.EnsureDeletedAsync();
-    _context1.Dispose();
-    _context2.Dispose();
+    _scope.Dispose();
   }
 
   [TestMethod]

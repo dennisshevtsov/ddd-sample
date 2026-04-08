@@ -3,16 +3,18 @@ using DddSample.Domain.Merchants;
 using DddSample.Domain.Warehouses;
 using DddSample.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class InfrastructureServicesExtensions
 {
-  public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+  public static IServiceCollection AddInfrastructure(this IServiceCollection services, string configSectionPath = "DddSampleDb")
   {
     ArgumentNullException.ThrowIfNull(services);
+    ArgumentNullException.ThrowIfNull(configSectionPath);
+
+    services.AddOptions<DddSampleDbSettings>().BindConfiguration(configSectionPath);
 
     services.AddDbContext<DbContext, DddSampleDbContext>((provider, builder) =>
     {
@@ -26,14 +28,6 @@ public static class InfrastructureServicesExtensions
     services.AddScoped<IMerchantRepository, MerchantRepository>();
     services.AddScoped<IWarehouseRepository, WarehouseRepository>();
 
-    return services;
-  }
-
-  public static IServiceCollection ConfigureInfrastructure(this IServiceCollection services, IConfiguration configuration)
-  {
-    ArgumentNullException.ThrowIfNull(services);
-    ArgumentNullException.ThrowIfNull(configuration);
-    services.Configure<DddSampleDbSettings>(configuration);
     return services;
   }
 }
