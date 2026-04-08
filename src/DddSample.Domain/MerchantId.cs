@@ -6,6 +6,8 @@ public readonly struct MerchantId
 
   private MerchantId(Guid id) => _id = id;
 
+  public override string ToString() => _id.ToString();
+
   public static readonly MerchantId None;
 
   public static MerchantId New() => new(Guid.CreateVersion7());
