@@ -25,7 +25,7 @@ public static class InfrastructureServicesExtensions
     services.AddScoped<IDeliveryPointRepository, DeliveryPointRepository>();
     services.AddScoped<IMerchantRepository, MerchantRepository>();
     services.AddScoped<IWarehouseRepository, WarehouseRepository>();
-    
+
     return services;
   }
 
