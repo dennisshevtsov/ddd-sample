@@ -8,9 +8,11 @@ namespace DddSample.Test;
 [TestCategory("Integration")]
 public sealed class MerchantTest
 {
+#pragma warning disable CS8618
   private IServiceScope _scope;
   private DbContext _context1;
   private DbContext _context2;
+#pragma warning restore CS8618
 
   [TestInitialize]
   public async Task InitializeAsync()
@@ -27,12 +29,18 @@ public sealed class MerchantTest
   [TestCleanup]
   public async Task CleanupAsync()
   {
-    await _context1.Database.EnsureDeletedAsync();
-    _scope.Dispose();
+    try
+    {
+      await _context1.Database.EnsureDeletedAsync();
+    }
+    finally
+    {
+      _scope?.Dispose();
+    }
   }
 
   [TestMethod]
-  public async Task SaveChangesAsync_NewMerchant_MerchantSaved(TestContext testContext)
+  public async Task SaveChangesAsync_NewMerchant_MerchantSaved()
   {
     // Arrange
     MerchantId merchantId = MerchantId.New();
@@ -45,12 +53,13 @@ public sealed class MerchantTest
     _context1.Add(merchantToSave);
 
     // Act
-    await _context1.SaveChangesAsync(testContext.CancellationToken);
+    await _context1.SaveChangesAsync();
 
     // Assert
-    Merchant merchantInDb = await _context2.Set<Merchant>()
-                                           .AsNoTracking()
-                                           .SingleAsync(testContext.CancellationToken);
+    Merchant? merchantInDb = await _context2.Set<Merchant>()
+                                            .AsNoTracking()
+                                            .SingleOrDefaultAsync();
+    Assert.IsNotNull(merchantInDb);
     Assert.AreEqual(merchantId, merchantInDb.Id);
     Assert.AreEqual(merchantName, merchantInDb.Name);
   }
