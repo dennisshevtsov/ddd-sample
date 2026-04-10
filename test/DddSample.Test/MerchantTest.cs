@@ -14,6 +14,8 @@ public sealed class MerchantTest
   private DbContext _context2;
 #pragma warning restore CS8618
 
+  public TestContext TestContext { get; set; }
+
   [TestInitialize]
   public async Task InitializeAsync()
   {
@@ -40,6 +42,7 @@ public sealed class MerchantTest
   }
 
   [TestMethod]
+  [Timeout(2000, CooperativeCancellation = true)]
   public async Task SaveChangesAsync_NewMerchant_MerchantSaved()
   {
     // Arrange
@@ -53,12 +56,12 @@ public sealed class MerchantTest
     _context1.Add(merchantToSave);
 
     // Act
-    await _context1.SaveChangesAsync();
+    await _context1.SaveChangesAsync(TestContext.CancellationToken);
 
     // Assert
     Merchant? merchantInDb = await _context2.Set<Merchant>()
                                             .AsNoTracking()
-                                            .SingleOrDefaultAsync();
+                                            .SingleOrDefaultAsync(TestContext.CancellationToken);
     Assert.IsNotNull(merchantInDb);
     Assert.AreEqual(merchantId, merchantInDb.Id);
     Assert.AreEqual(merchantName, merchantInDb.Name);
