@@ -10,7 +10,8 @@ internal sealed class MerchantEntityTypeConfiguration : IEntityTypeConfiguration
   public void Configure(EntityTypeBuilder<Merchant> builder)
   {
     builder.ToTable("merchant");
-    builder.HasKey(entity => entity.Id);
+    builder.HasKey(entity => entity.Id)
+           .HasName("pk_merchant");
 
     builder.Property(entity => entity.Id)
            .HasColumnName("id")

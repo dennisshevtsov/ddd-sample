@@ -11,7 +11,8 @@ internal sealed class WarehouseEntityTypeConfiguration : IEntityTypeConfiguratio
   public void Configure(EntityTypeBuilder<Warehouse> builder)
   {
     builder.ToTable("warehouse");
-    builder.HasKey(entity => entity.Id);
+    builder.HasKey(entity => entity.Id)
+           .HasName("pk_warehouse");
 
     builder.Property(entity => entity.Id)
            .HasColumnName("id")
