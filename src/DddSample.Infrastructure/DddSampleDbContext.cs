@@ -6,6 +6,7 @@ internal sealed class DddSampleDbContext(DbContextOptions options) : DbContext(o
 {
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
+    modelBuilder.ApplyConfiguration(new DeliveryPointEntityTypeConfiguration());
     modelBuilder.ApplyConfiguration(new MerchantEntityTypeConfiguration());
     modelBuilder.ApplyConfiguration(new WarehouseEntityTypeConfiguration());
   }

@@ -26,7 +26,7 @@ internal sealed class WarehouseEntityTypeConfiguration : IEntityTypeConfiguratio
            .HasColumnType("jsonb")
            .IsRequired();
     builder.Property(entity => entity.MerchantId)
-           .HasColumnName("merchantId")
+           .HasColumnName("merchant_id")
            .IsRequired();
 
     builder.HasOne(typeof(Merchant))
