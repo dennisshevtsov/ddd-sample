@@ -4,7 +4,7 @@ using DddSample.Domain.Warehouses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DddSample.Infrastructure;
+namespace DddSample.Infrastructure.Warehouses;
 
 internal sealed class WarehouseEntityTypeConfiguration : IEntityTypeConfiguration<Warehouse>
 {

@@ -1,7 +1,7 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.Merchants;
 
-namespace DddSample.Infrastructure;
+namespace DddSample.Infrastructure.Merchants;
 
 internal sealed class MerchantRepository : IMerchantRepository
 {

@@ -1,7 +1,7 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.Warehouses;
 
-namespace DddSample.Infrastructure;
+namespace DddSample.Infrastructure.Warehouses;
 
 public sealed class WarehouseRepository : IWarehouseRepository
 {

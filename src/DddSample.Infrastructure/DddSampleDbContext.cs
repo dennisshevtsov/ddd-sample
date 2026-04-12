@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DddSample.Infrastructure.DeliveryPoints;
+using DddSample.Infrastructure.Merchants;
+using DddSample.Infrastructure.Warehouses;
+using Microsoft.EntityFrameworkCore;
 
 namespace DddSample.Infrastructure;
 

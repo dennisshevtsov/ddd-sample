@@ -2,6 +2,9 @@
 using DddSample.Domain.Merchants;
 using DddSample.Domain.Warehouses;
 using DddSample.Infrastructure;
+using DddSample.Infrastructure.DeliveryPoints;
+using DddSample.Infrastructure.Merchants;
+using DddSample.Infrastructure.Warehouses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 

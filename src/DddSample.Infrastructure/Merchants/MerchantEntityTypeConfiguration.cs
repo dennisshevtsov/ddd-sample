@@ -3,7 +3,7 @@ using DddSample.Domain.Merchants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DddSample.Infrastructure;
+namespace DddSample.Infrastructure.Merchants;
 
 internal sealed class MerchantEntityTypeConfiguration : IEntityTypeConfiguration<Merchant>
 {

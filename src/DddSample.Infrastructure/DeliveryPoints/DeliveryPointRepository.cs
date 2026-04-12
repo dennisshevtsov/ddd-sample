@@ -1,7 +1,7 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.DeliveryPoints;
 
-namespace DddSample.Infrastructure;
+namespace DddSample.Infrastructure.DeliveryPoints;
 
 public sealed class DeliveryPointRepository : IDeliveryPointRepository
 {
