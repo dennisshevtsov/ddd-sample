@@ -3,10 +3,11 @@ using DddSample.Domain.DeliveryPoints;
 using DddSample.Domain.Warehouses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Text.Json;
 
 namespace DddSample.Infrastructure.DeliveryPoints;
 
-internal sealed class DeliveryPointEntityTypeConfiguration : IEntityTypeConfiguration<DeliveryPoint>
+internal sealed class DeliveryPointEntityTypeConfiguration(JsonSerializerOptions options) : IEntityTypeConfiguration<DeliveryPoint>
 {
   public void Configure(EntityTypeBuilder<DeliveryPoint> builder)
   {
@@ -20,11 +21,12 @@ internal sealed class DeliveryPointEntityTypeConfiguration : IEntityTypeConfigur
            .HasConversion(id => id.ToString(), id => DeliveryPointId.Parce(id));
     builder.Property(entity => entity.Address)
            .HasColumnName("address")
-           .HasColumnType("jsonb");
+           .IsRequired()
+           .IsJsonb(options);
     builder.Property(entity => entity.OpeningHours)
            .HasColumnName("opening_hours")
-           .HasColumnType("jsonb")
-           .IsRequired();
+           .IsRequired()
+           .IsJsonb(options);
     builder.Property(entity => entity.WarehouseId)
            .HasColumnName("warehouse_id")
            .IsRequired();

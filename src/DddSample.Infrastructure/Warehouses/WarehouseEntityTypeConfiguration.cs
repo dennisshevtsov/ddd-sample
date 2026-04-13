@@ -23,13 +23,12 @@ internal sealed class WarehouseEntityTypeConfiguration(JsonSerializerOptions opt
     builder.Property(entity => entity.Address)
            .HasColumnName("address")
            .IsRequired()
-           .HasConversion(address => JsonSerializer.Serialize(address, options), address => JsonSerializer.Deserialize<WarehouseAddress>(address, options));
+           .IsJsonb(options);
 
     builder.Property(entity => entity.Contact)
            .HasColumnName("contact")
-           .HasColumnType("jsonb")
            .IsRequired()
-           .HasConversion(contact => JsonSerializer.Serialize(contact, options), contact => JsonSerializer.Deserialize<WarehouseContact>(contact, options));
+           .IsJsonb(options);
 
     builder.Property(entity => entity.MerchantId)
            .HasColumnName("merchant_id")
