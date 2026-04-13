@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace DddSample.Infrastructure;
 
-public sealed class LongitudeJsonConverter : JsonConverter<Longitude>
+internal sealed class LongitudeJsonConverter : JsonConverter<Longitude>
 {
   public override Longitude Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
   {

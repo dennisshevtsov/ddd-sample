@@ -4,19 +4,19 @@ public sealed class WarehouseContact
 {
   public WarehouseContact()
   {
-    _phones = [];
     _emails = [];
+    _phones = [];
   }
 
-  public WarehouseContact(IReadOnlyList<Phone> phones, IReadOnlyList<Email> emails)
+  public WarehouseContact(IReadOnlyList<Email> emails, IReadOnlyList<Phone> phones)
   {
-    _phones = [.. phones];
     _emails = [.. emails];
+    _phones = [.. phones];
   }
-
-  private readonly IList<Phone> _phones;
-  public IReadOnlyList<Phone> Phones => _phones.AsReadOnly();
 
   private readonly IList<Email> _emails;
   public IReadOnlyList<Email> Emails => _emails.AsReadOnly();
+
+  private readonly IList<Phone> _phones;
+  public IReadOnlyList<Phone> Phones => _phones.AsReadOnly();
 }

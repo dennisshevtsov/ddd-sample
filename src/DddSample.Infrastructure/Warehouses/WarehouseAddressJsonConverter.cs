@@ -5,37 +5,44 @@ using System.Text.Json.Serialization;
 
 namespace DddSample.Infrastructure.Warehouses;
 
-public sealed class WarehouseAddressJsonConverter : JsonConverter<WarehouseAddress>
+internal sealed class WarehouseAddressJsonConverter : JsonConverter<WarehouseAddress>
 {
   public override WarehouseAddress? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
   {
     if (reader.TokenType != JsonTokenType.StartObject)
     {
-      throw new JsonException($"Invalid TokenType {reader.TokenType} to read WarehouseAddress");
+      throw new JsonException($"Invalid TokenType {reader.TokenType} to read {nameof(WarehouseAddress)}");
     }
 
     Address? address = null;
     Coordinates? coordinates = null;
+
+    string addressPropertyName = ConvertName(nameof(WarehouseAddress.Address), options);
+    string coordinatesPropertyName = ConvertName(nameof(WarehouseAddress.Coodinates), options);
+
     while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
     {
       if (reader.TokenType != JsonTokenType.PropertyName)
       {
-        throw new JsonException($"Invalid TokenType {reader.TokenType} to read WarehouseAddress property");
+        throw new JsonException($"Invalid TokenType {reader.TokenType} to read {nameof(WarehouseAddress)} property");
       }
 
       string? propertyName = reader.GetString();
       reader.Read();
-      switch (propertyName)
+
+      if (propertyName == addressPropertyName)
       {
-        case "address":
-          address = JsonSerializer.Deserialize<Address>(ref reader, options);
-          break;
-        case "coordinates":
-          coordinates = JsonSerializer.Deserialize<Coordinates>(ref reader, options);
-          break;
-        default:
-          throw new JsonException($"Unknown propertyName {propertyName} to read WarehouseAddress property");
+        address = JsonSerializer.Deserialize<Address>(ref reader, options);
+        continue;
       }
+
+      if (propertyName == coordinatesPropertyName)
+      {
+        coordinates = JsonSerializer.Deserialize<Coordinates>(ref reader, options);
+        continue;
+      }
+
+      throw new JsonException($"Unknown propertyName {propertyName} to read {nameof(WarehouseAddress)} property");
     }
 
     return new WarehouseAddress
@@ -49,12 +56,21 @@ public sealed class WarehouseAddressJsonConverter : JsonConverter<WarehouseAddre
   {
     writer.WriteStartObject();
 
-    writer.WritePropertyName("address");
+    writer.WritePropertyName(ConvertName(nameof(WarehouseAddress.Address), options));
     JsonSerializer.Serialize(writer, value.Address, options);
 
-    writer.WritePropertyName("coordinates");
+    writer.WritePropertyName(ConvertName(nameof(WarehouseAddress.Coodinates), options));
     JsonSerializer.Serialize(writer, value.Coodinates, options);
 
     writer.WriteEndObject();
+  }
+
+  private static string ConvertName(string name, JsonSerializerOptions options)
+  {
+    if (options.PropertyNamingPolicy is null)
+    {
+      return name;
+    }
+    return options.PropertyNamingPolicy.ConvertName(name);
   }
 }

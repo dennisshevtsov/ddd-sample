@@ -14,43 +14,59 @@ public sealed class WarehouseContactJsonConverter : JsonConverter<WarehouseConta
       throw new JsonException($"Invalid TokenType {reader.TokenType} to read WarehouseContact");
     }
 
-    Phone[]? phones = null;
     Email[]? emails = null;
+    Phone[]? phones = null;
+
+    string emailsPropertyName = ConvertName(nameof(WarehouseContact.Emails), options);
+    string phonesPropertyName = ConvertName(nameof(WarehouseContact.Phones), options);
+
     while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
     {
       if (reader.TokenType != JsonTokenType.PropertyName)
       {
-        throw new JsonException($"Invalid TokenType {reader.TokenType} to read WarehouseContact property");
+        throw new JsonException($"Invalid TokenType {reader.TokenType} to read {nameof(WarehouseContact)} property");
       }
 
       string? propertyName = reader.GetString();
       reader.Read();
-      switch (propertyName)
+
+      if (propertyName == emailsPropertyName)
       {
-        case "emails":
-          emails = JsonSerializer.Deserialize<Email[]>(ref reader, options);
-          break;
-        case "phones":
-          phones = JsonSerializer.Deserialize<Phone[]>(ref reader, options);
-          break;
-        default:
-          throw new JsonException($"Unknown propertyName {propertyName} to read WarehouseContact property");
+        emails = JsonSerializer.Deserialize<Email[]>(ref reader, options);
+        continue;
       }
+
+      if (propertyName == phonesPropertyName)
+      {
+        phones = JsonSerializer.Deserialize<Phone[]>(ref reader, options);
+        continue;
+      }
+
+      throw new JsonException($"Unknown propertyName {propertyName} to read {nameof(WarehouseContact)} property");
     }
 
-    return new WarehouseContact(phones ?? [], emails ?? []);
+    return new WarehouseContact(emails ?? [], phones ?? []);
   }
 
   public override void Write(Utf8JsonWriter writer, WarehouseContact value, JsonSerializerOptions options)
   {
     writer.WriteStartObject();
 
-    writer.WritePropertyName("emails");
+    writer.WritePropertyName(ConvertName(nameof(WarehouseContact.Emails), options));
     JsonSerializer.Serialize(writer, value.Emails, options);
 
-    writer.WritePropertyName("phones");
+    writer.WritePropertyName(ConvertName(nameof(WarehouseContact.Phones), options));
     JsonSerializer.Serialize(writer, value.Phones, options);
 
     writer.WriteEndObject();
+  }
+
+  private static string ConvertName(string name, JsonSerializerOptions options)
+  {
+    if (options.PropertyNamingPolicy is null)
+    {
+      return name;
+    }
+    return options.PropertyNamingPolicy.ConvertName(name);
   }
 }

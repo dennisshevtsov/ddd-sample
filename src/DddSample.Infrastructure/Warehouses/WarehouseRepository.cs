@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DddSample.Infrastructure.Warehouses;
 
-public sealed class WarehouseRepository(DbContext dbContext) : IWarehouseRepository
+internal sealed class WarehouseRepository(DbContext dbContext) : IWarehouseRepository
 {
   public Task<Warehouse?> GetAsync(WarehouseId id, CancellationToken cancellationToken = default)
   {

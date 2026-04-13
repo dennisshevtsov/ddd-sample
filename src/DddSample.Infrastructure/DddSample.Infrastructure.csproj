@@ -16,4 +16,8 @@
     <ProjectReference Include="..\DddSample.Domain\DddSample.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="DddSample.Test" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,6 @@
 ﻿namespace DddSample.Infrastructure;
 
-public sealed class DddSampleDbSettings
+internal sealed class DddSampleDbSettings
 {
   public required string ConnectionString { get; set; }
 }

@@ -7,15 +7,8 @@ using System.Text.Json;
 
 namespace DddSample.Infrastructure.Warehouses;
 
-internal sealed class WarehouseEntityTypeConfiguration : IEntityTypeConfiguration<Warehouse>
+internal sealed class WarehouseEntityTypeConfiguration(JsonSerializerOptions options) : IEntityTypeConfiguration<Warehouse>
 {
-  private readonly JsonSerializerOptions _options;
-
-  internal WarehouseEntityTypeConfiguration(JsonSerializerOptions options)
-  {
-     _options = options;
-  }
-
   public void Configure(EntityTypeBuilder<Warehouse> builder)
   {
     builder.ToTable("warehouse");
@@ -30,13 +23,13 @@ internal sealed class WarehouseEntityTypeConfiguration : IEntityTypeConfiguratio
     builder.Property(entity => entity.Address)
            .HasColumnName("address")
            .IsRequired()
-           .HasConversion(address => JsonSerializer.Serialize(address, _options), address => JsonSerializer.Deserialize<WarehouseAddress>(address, _options));
+           .HasConversion(address => JsonSerializer.Serialize(address, options), address => JsonSerializer.Deserialize<WarehouseAddress>(address, options));
 
     builder.Property(entity => entity.Contact)
            .HasColumnName("contact")
            .HasColumnType("jsonb")
            .IsRequired()
-           .HasConversion(contact => JsonSerializer.Serialize(contact, _options), contact => JsonSerializer.Deserialize<WarehouseContact>(contact, _options));
+           .HasConversion(contact => JsonSerializer.Serialize(contact, options), contact => JsonSerializer.Deserialize<WarehouseContact>(contact, options));
 
     builder.Property(entity => entity.MerchantId)
            .HasColumnName("merchant_id")

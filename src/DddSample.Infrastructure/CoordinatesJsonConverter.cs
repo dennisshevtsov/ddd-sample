@@ -4,37 +4,44 @@ using System.Text.Json.Serialization;
 
 namespace DddSample.Infrastructure;
 
-public sealed class CoordinatesJsonConverter : JsonConverter<Coordinates>
+internal sealed class CoordinatesJsonConverter : JsonConverter<Coordinates>
 {
   public override Coordinates Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
   {
     if (reader.TokenType != JsonTokenType.StartObject)
     {
-      throw new JsonException($"Invalid TokenType {reader.TokenType} to read Coordinates");
+      throw new JsonException($"Invalid TokenType {reader.TokenType} to read {nameof(Coordinates)}");
     }
 
     Latitude? latitude = null;
     Longitude? longitude = null;
+
+    string latitudePropertyName = ConvertName(nameof(Coordinates.Latitude), options);
+    string longitudePropertyName = ConvertName(nameof(Coordinates.Longitude), options);
+
     while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
     {
       if (reader.TokenType != JsonTokenType.PropertyName)
       {
-        throw new JsonException($"Invalid TokenType {reader.TokenType} to read Coordinates property");
+        throw new JsonException($"Invalid TokenType {reader.TokenType} to read {nameof(Coordinates)} property");
       }
 
-      string? propertyName = reader.GetString();
+      string ? propertyName = reader.GetString();
       reader.Read();
-      switch (propertyName)
+
+      if (propertyName == latitudePropertyName)
       {
-        case "latitude":
-          latitude = JsonSerializer.Deserialize<Latitude>(ref reader, options);
-          break;
-        case "longitude":
-          longitude = JsonSerializer.Deserialize<Longitude>(ref reader, options);
-          break;
-        default:
-          throw new JsonException($"Unknown propertyName {propertyName} to read Coordinates property");
+        latitude = JsonSerializer.Deserialize<Latitude>(ref reader, options);
+        continue;
       }
+
+      if (propertyName == longitudePropertyName)
+      {
+        longitude = JsonSerializer.Deserialize<Longitude>(ref reader, options);
+        continue;
+      }
+
+      throw new JsonException($"Unknown propertyName {propertyName} to read {nameof(Coordinates)} property");
     }
 
     return new Coordinates
@@ -48,12 +55,21 @@ public sealed class CoordinatesJsonConverter : JsonConverter<Coordinates>
   {
     writer.WriteStartObject();
 
-    writer.WritePropertyName("latitude");
+    writer.WritePropertyName(ConvertName(nameof(Coordinates.Latitude), options));
     JsonSerializer.Serialize(writer, value.Latitude, options);
 
-    writer.WritePropertyName("longitude");
+    writer.WritePropertyName(ConvertName(nameof(Coordinates.Longitude), options));
     JsonSerializer.Serialize(writer, value.Longitude, options);
 
     writer.WriteEndObject();
+  }
+
+  private static string ConvertName(string name, JsonSerializerOptions options)
+  {
+    if (options.PropertyNamingPolicy is null)
+    {
+      return name;
+    }
+    return options.PropertyNamingPolicy.ConvertName(name);
   }
 }

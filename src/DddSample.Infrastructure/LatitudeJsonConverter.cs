@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace DddSample.Infrastructure;
 
-public sealed class LatitudeJsonConverter : JsonConverter<Latitude>
+internal sealed class LatitudeJsonConverter : JsonConverter<Latitude>
 {
   public override Latitude Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
   {

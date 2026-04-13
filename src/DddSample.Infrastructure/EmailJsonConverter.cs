@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace DddSample.Infrastructure;
 
-public sealed class EmailJsonConverter : JsonConverter<Email>
+internal sealed class EmailJsonConverter : JsonConverter<Email>
 {
   public override Email Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
   {

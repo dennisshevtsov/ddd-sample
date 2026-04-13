@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace DddSample.Infrastructure;
 
-public sealed class AddressJsonConverter : JsonConverter<Address>
+internal sealed class AddressJsonConverter : JsonConverter<Address>
 {
   public override Address Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
   {

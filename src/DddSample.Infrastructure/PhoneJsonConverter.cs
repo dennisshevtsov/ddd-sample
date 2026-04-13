@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace DddSample.Infrastructure;
 
-public sealed class PhoneJsonConverter : JsonConverter<Phone>
+internal sealed class PhoneJsonConverter : JsonConverter<Phone>
 {
   public override Phone Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
   {
