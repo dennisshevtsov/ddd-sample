@@ -1,27 +1,25 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.Warehouses;
+using Microsoft.EntityFrameworkCore;
 
 namespace DddSample.Infrastructure.Warehouses;
 
-public sealed class WarehouseRepository : IWarehouseRepository
+public sealed class WarehouseRepository(DbContext dbContext) : IWarehouseRepository
 {
-  public Task<Warehouse?> GetAsync(MerchantId id, CancellationToken cancellationToken = default)
+  public Task<Warehouse?> GetAsync(WarehouseId id, CancellationToken cancellationToken = default)
   {
-    throw new NotImplementedException();
+    return dbContext.Set<Warehouse>()
+                    .Where(warehouse => warehouse.Id == id)
+                    .FirstOrDefaultAsync(cancellationToken);
   }
 
-  public Task AddAsync(Warehouse warehouse, CancellationToken cancellationToken = default)
+  public void Add(Warehouse warehouse) => dbContext.Add(warehouse);
+
+  public void Delete(Warehouse warehouse)
   {
-    throw new NotImplementedException();
+    dbContext.Set<Warehouse>()
+             .Remove(warehouse);
   }
 
-  public Task DeleteAsync(Warehouse warehouse, CancellationToken cancellationToken = default)
-  {
-    throw new NotImplementedException();
-  }
-
-  public Task CommitAsync(CancellationToken cancellationToken = default)
-  {
-    throw new NotImplementedException();
-  }
+  public Task CommitAsync(CancellationToken cancellationToken = default) => dbContext.SaveChangesAsync(cancellationToken);
 }
