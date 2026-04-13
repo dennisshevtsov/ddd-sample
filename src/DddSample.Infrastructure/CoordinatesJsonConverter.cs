@@ -16,8 +16,8 @@ internal sealed class CoordinatesJsonConverter : JsonConverter<Coordinates>
     Latitude? latitude = null;
     Longitude? longitude = null;
 
-    string latitudePropertyName = ConvertName(nameof(Coordinates.Latitude), options);
-    string longitudePropertyName = ConvertName(nameof(Coordinates.Longitude), options);
+    string latitudePropertyName = options.ConvertName(nameof(Coordinates.Latitude));
+    string longitudePropertyName = options.ConvertName(nameof(Coordinates.Longitude));
 
     while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
     {
@@ -55,21 +55,12 @@ internal sealed class CoordinatesJsonConverter : JsonConverter<Coordinates>
   {
     writer.WriteStartObject();
 
-    writer.WritePropertyName(ConvertName(nameof(Coordinates.Latitude), options));
+    writer.WritePropertyName(options.ConvertName(nameof(Coordinates.Latitude)));
     JsonSerializer.Serialize(writer, value.Latitude, options);
 
-    writer.WritePropertyName(ConvertName(nameof(Coordinates.Longitude), options));
+    writer.WritePropertyName(options.ConvertName(nameof(Coordinates.Longitude)));
     JsonSerializer.Serialize(writer, value.Longitude, options);
 
     writer.WriteEndObject();
-  }
-
-  private static string ConvertName(string name, JsonSerializerOptions options)
-  {
-    if (options.PropertyNamingPolicy is null)
-    {
-      return name;
-    }
-    return options.PropertyNamingPolicy.ConvertName(name);
   }
 }

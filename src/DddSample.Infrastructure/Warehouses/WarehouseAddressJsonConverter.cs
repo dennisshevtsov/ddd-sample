@@ -17,8 +17,8 @@ internal sealed class WarehouseAddressJsonConverter : JsonConverter<WarehouseAdd
     Address? address = null;
     Coordinates? coordinates = null;
 
-    string addressPropertyName = ConvertName(nameof(WarehouseAddress.Address), options);
-    string coordinatesPropertyName = ConvertName(nameof(WarehouseAddress.Coodinates), options);
+    string addressPropertyName = options.ConvertName(nameof(WarehouseAddress.Address));
+    string coordinatesPropertyName = options.ConvertName(nameof(WarehouseAddress.Coodinates));
 
     while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
     {
@@ -56,21 +56,12 @@ internal sealed class WarehouseAddressJsonConverter : JsonConverter<WarehouseAdd
   {
     writer.WriteStartObject();
 
-    writer.WritePropertyName(ConvertName(nameof(WarehouseAddress.Address), options));
+    writer.WritePropertyName(options.ConvertName(nameof(WarehouseAddress.Address)));
     JsonSerializer.Serialize(writer, value.Address, options);
 
-    writer.WritePropertyName(ConvertName(nameof(WarehouseAddress.Coodinates), options));
+    writer.WritePropertyName(options.ConvertName(nameof(WarehouseAddress.Coodinates)));
     JsonSerializer.Serialize(writer, value.Coodinates, options);
 
     writer.WriteEndObject();
-  }
-
-  private static string ConvertName(string name, JsonSerializerOptions options)
-  {
-    if (options.PropertyNamingPolicy is null)
-    {
-      return name;
-    }
-    return options.PropertyNamingPolicy.ConvertName(name);
   }
 }

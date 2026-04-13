@@ -17,8 +17,8 @@ public sealed class WarehouseContactJsonConverter : JsonConverter<WarehouseConta
     Email[]? emails = null;
     Phone[]? phones = null;
 
-    string emailsPropertyName = ConvertName(nameof(WarehouseContact.Emails), options);
-    string phonesPropertyName = ConvertName(nameof(WarehouseContact.Phones), options);
+    string emailsPropertyName = options.ConvertName(nameof(WarehouseContact.Emails));
+    string phonesPropertyName = options.ConvertName(nameof(WarehouseContact.Phones));
 
     while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
     {
@@ -52,21 +52,12 @@ public sealed class WarehouseContactJsonConverter : JsonConverter<WarehouseConta
   {
     writer.WriteStartObject();
 
-    writer.WritePropertyName(ConvertName(nameof(WarehouseContact.Emails), options));
+    writer.WritePropertyName(options.ConvertName(nameof(WarehouseContact.Emails)));
     JsonSerializer.Serialize(writer, value.Emails, options);
 
-    writer.WritePropertyName(ConvertName(nameof(WarehouseContact.Phones), options));
+    writer.WritePropertyName(options.ConvertName(nameof(WarehouseContact.Phones)));
     JsonSerializer.Serialize(writer, value.Phones, options);
 
     writer.WriteEndObject();
-  }
-
-  private static string ConvertName(string name, JsonSerializerOptions options)
-  {
-    if (options.PropertyNamingPolicy is null)
-    {
-      return name;
-    }
-    return options.PropertyNamingPolicy.ConvertName(name);
   }
 }
