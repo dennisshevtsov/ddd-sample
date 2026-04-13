@@ -26,6 +26,8 @@ public readonly struct Phone
     _phone = phone;
   }
 
+  public static readonly Phone None;
+
   public static Phone Parse(string phone) => new(phone);
   public static implicit operator string(Phone phone) => phone._phone;
 }

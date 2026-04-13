@@ -6,6 +6,8 @@ public readonly struct WarehouseId
 
   private WarehouseId(Guid id) => _id = id;
 
+  public override string ToString() => _id.ToString();
+
   public static readonly WarehouseId None;
 
   public static WarehouseId New() => new(Guid.CreateVersion7());

@@ -9,7 +9,7 @@ public readonly struct Latitude : IEquatable<Latitude>
 
   private readonly double _latitude;
 
-  private Latitude(double latitude)
+  public Latitude(double latitude)
   {
     if (latitude < MinValue)
     {

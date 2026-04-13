@@ -21,10 +21,10 @@ public static class InfrastructureServicesExtensions
 
     services.AddDbContext<DbContext, DddSampleDbContext>((provider, builder) =>
     {
-      var options = provider.GetRequiredService<IOptions<DddSampleDbSettings>>().Value;
-      ArgumentException.ThrowIfNullOrEmpty(options.ConnectionString);
+      DddSampleDbSettings dbSettings = provider.GetRequiredService<IOptions<DddSampleDbSettings>>().Value;
+      ArgumentException.ThrowIfNullOrEmpty(dbSettings.ConnectionString);
 
-      builder.UseNpgsql(options.ConnectionString);
+      builder.UseNpgsql(dbSettings.ConnectionString);
     });
 
     services.AddScoped<IDeliveryPointRepository, DeliveryPointRepository>();

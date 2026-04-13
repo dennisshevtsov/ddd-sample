@@ -2,17 +2,15 @@
 using DddSample.Domain.Merchants;
 using Microsoft.EntityFrameworkCore;
 
-namespace DddSample.Test;
+namespace DddSample.Test.Infrastructure;
 
 [TestClass]
 [TestCategory("Integration")]
 public sealed class MerchantTest
 {
-#pragma warning disable CS8618
   private IServiceScope _scope;
   private DbContext _context1;
   private DbContext _context2;
-#pragma warning restore CS8618
 
   public TestContext TestContext { get; set; }
 

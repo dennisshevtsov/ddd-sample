@@ -2,7 +2,7 @@
 
 public sealed class DeliveryPointAddress
 {
-  public DeliveryPointAddress(in Address address, in Coodinates coodinates)
+  public DeliveryPointAddress(in Address address, in Coordinates coodinates)
   {
     Address = address;
     Coodinates = coodinates;
@@ -10,5 +10,5 @@ public sealed class DeliveryPointAddress
 
   public Address Address { get; }
 
-  public Coodinates Coodinates { get; }
+  public Coordinates Coodinates { get; }
 }
