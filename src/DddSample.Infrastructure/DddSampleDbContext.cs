@@ -8,17 +8,20 @@ namespace DddSample.Infrastructure;
 
 internal sealed class DddSampleDbContext(DbContextOptions options) : DbContext(options)
 {
-  private static readonly JsonSerializerOptions _jsonSerializerOptions = new ()
+  private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
   {
     PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
     Converters =
     {
       new AddressJsonConverter(),
       new CoordinatesJsonConverter(),
+      new DeliveryPointAddressJsonConverter(),
+      new DeliveryPointOpeningHoursJsonConverter(),
       new EmailJsonConverter(),
       new LatitudeJsonConverter(),
       new LongitudeJsonConverter(),
       new PhoneJsonConverter(),
+      new TimePeriodJsonConverter(),
       new WarehouseAddressJsonConverter(),
       new WarehouseContactJsonConverter(),
     },
@@ -26,7 +29,7 @@ internal sealed class DddSampleDbContext(DbContextOptions options) : DbContext(o
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.ApplyConfiguration(new DeliveryPointEntityTypeConfiguration());
+    modelBuilder.ApplyConfiguration(new DeliveryPointEntityTypeConfiguration(_jsonSerializerOptions));
     modelBuilder.ApplyConfiguration(new MerchantEntityTypeConfiguration());
     modelBuilder.ApplyConfiguration(new WarehouseEntityTypeConfiguration(_jsonSerializerOptions));
   }
