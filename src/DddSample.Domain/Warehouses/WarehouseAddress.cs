@@ -2,13 +2,13 @@
 
 public sealed class WarehouseAddress
 {
-  public WarehouseAddress(in Address address, in Coordinates coodinates)
+  public WarehouseAddress(in Address address, in Coordinates coordinates)
   {
     Address = address;
-    Coodinates = coodinates;
+    Coordinates = coordinates;
   }
 
   public Address Address { get; }
 
-  public Coordinates Coodinates { get; }
+  public Coordinates Coordinates { get; }
 }

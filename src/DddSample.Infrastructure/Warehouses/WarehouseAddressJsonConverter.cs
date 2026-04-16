@@ -18,7 +18,7 @@ internal sealed class WarehouseAddressJsonConverter : JsonConverter<WarehouseAdd
     Coordinates? coordinates = null;
 
     string addressPropertyName = options.ConvertName(nameof(WarehouseAddress.Address));
-    string coordinatesPropertyName = options.ConvertName(nameof(WarehouseAddress.Coodinates));
+    string coordinatesPropertyName = options.ConvertName(nameof(WarehouseAddress.Coordinates));
 
     while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
     {
@@ -59,8 +59,8 @@ internal sealed class WarehouseAddressJsonConverter : JsonConverter<WarehouseAdd
     writer.WritePropertyName(options.ConvertName(nameof(WarehouseAddress.Address)));
     JsonSerializer.Serialize(writer, value.Address, options);
 
-    writer.WritePropertyName(options.ConvertName(nameof(WarehouseAddress.Coodinates)));
-    JsonSerializer.Serialize(writer, value.Coodinates, options);
+    writer.WritePropertyName(options.ConvertName(nameof(WarehouseAddress.Coordinates)));
+    JsonSerializer.Serialize(writer, value.Coordinates, options);
 
     writer.WriteEndObject();
   }

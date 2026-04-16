@@ -64,7 +64,7 @@ public sealed class WarehouseTest
       address: new WarehouseAddress
       (
         address: Address.Parse(address),
-        coodinates: new Coordinates
+        coordinates: new Coordinates
         (
           latitude: new Latitude(latitude),
           longitude: new Longitude(longitude)
@@ -95,7 +95,7 @@ public sealed class WarehouseTest
 
     Assert.IsNotNull(warehouseInDb.Address);
     Assert.AreEqual(address, warehouseInDb.Address.Address);
-    Assert.AreEqual(new Coordinates((Latitude)latitude, (Longitude)longitude), warehouseInDb.Address.Coodinates);
+    Assert.AreEqual(new Coordinates((Latitude)latitude, (Longitude)longitude), warehouseInDb.Address.Coordinates);
 
     Assert.IsNotNull(warehouseInDb.Contact);
     Assert.IsNotNull(warehouseInDb.Contact.Phones);

@@ -60,7 +60,7 @@ public sealed class DeliveryPointTest
       address: new WarehouseAddress
       (
         address: Address.Parse("test address"),
-        coodinates: new Coordinates
+        coordinates: new Coordinates
         (
           latitude: new Latitude(1D),
           longitude: new Longitude(2D)
