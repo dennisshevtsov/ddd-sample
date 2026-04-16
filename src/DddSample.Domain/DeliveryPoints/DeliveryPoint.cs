@@ -2,7 +2,7 @@
 
 public sealed class DeliveryPoint
 {
-  public DeliveryPoint(DeliveryPointId id, DeliveryPointAddress address, WeeklyOpeningHours openingHours, WarehouseId warehouseId)
+  public DeliveryPoint(DeliveryPointId id, DeliveryPointAddress address, DeliveryPointOpeningHours openingHours, WarehouseId warehouseId)
   {
     Id = id;
     Address = address;
@@ -12,7 +12,7 @@ public sealed class DeliveryPoint
 
   public DeliveryPointId Id { get; }
   public DeliveryPointAddress Address { get; }
-  public WeeklyOpeningHours OpeningHours { get; }
+  public DeliveryPointOpeningHours OpeningHours { get; }
 
   public WarehouseId WarehouseId { get; }
 }

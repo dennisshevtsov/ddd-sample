@@ -9,7 +9,7 @@ public readonly struct Longitude : IEquatable<Longitude>
 
   private readonly double _longitude;
 
-  private Longitude(double longitude)
+  public Longitude(double longitude)
   {
     if (longitude < MinValue)
     {

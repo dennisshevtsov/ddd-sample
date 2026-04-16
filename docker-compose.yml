@@ -1,0 +1,23 @@
+services:
+  ddd-sample-resources:
+    container_name: ddd-sample-resources
+    image: ddd-sample-resources
+    build:
+      context: .
+      dockerfile: src/DddSample.Resources/Dockerfile
+    environment:
+      - ASPNETCORE_HTTP_PORTS=5001
+      - DDDSAMPLEDB__CONNECTIONSTRING=Host=ddd-sample-db;Port=5432;Database=ddd-sample-db;Username=dev;Password=dev;Include Error Detail=true
+    ports:
+      - "5001:5001"
+    depends_on:
+      - ddd-sample-db
+  ddd-sample-db:
+    container_name: ddd-sample-db
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=dev
+      - POSTGRES_DB=ddd-sample-db

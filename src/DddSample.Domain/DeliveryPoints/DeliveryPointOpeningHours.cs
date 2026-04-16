@@ -1,10 +1,10 @@
-﻿namespace DddSample.Domain;
+﻿namespace DddSample.Domain.DeliveryPoints;
 
-public sealed class WeeklyOpeningHours
+public sealed class DeliveryPointOpeningHours
 {
-  public WeeklyOpeningHours(bool worksOnHoliday = false, TimePeriod mon = default, TimePeriod tue = default, TimePeriod wed = default, TimePeriod thu = default, TimePeriod fri = default, TimePeriod sat = default, TimePeriod sun = default)
+  public DeliveryPointOpeningHours(bool worksOnHolidays = false, TimePeriod mon = default, TimePeriod tue = default, TimePeriod wed = default, TimePeriod thu = default, TimePeriod fri = default, TimePeriod sat = default, TimePeriod sun = default)
   {
-    WorksOnHolidays = worksOnHoliday;
+    WorksOnHolidays = worksOnHolidays;
     Mon = mon;
     Tue = tue;
     Wed = wed;

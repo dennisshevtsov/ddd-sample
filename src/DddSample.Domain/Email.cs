@@ -18,6 +18,8 @@ public readonly struct Email
 
   public override string ToString() => _email;
 
+  public static readonly Email None;
+
   private static bool HasValidFormat(string value)
   {
     int atSings = 0;

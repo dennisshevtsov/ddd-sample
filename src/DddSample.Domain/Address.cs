@@ -30,6 +30,7 @@ public readonly struct Address : IEquatable<Address>
   public override string ToString() => _address;
 
   public static implicit operator string(Address address) => address.ToString();
+  public static explicit operator Address(string value) => Address.Parse(value);
   public static bool operator ==(Address left, Address right) => left.Equals(right);
   public static bool operator !=(Address left, Address right) => !left.Equals(right);
 }
