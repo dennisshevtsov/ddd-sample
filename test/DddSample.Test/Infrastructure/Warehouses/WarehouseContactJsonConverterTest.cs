@@ -22,7 +22,7 @@ public sealed class WarehouseContactJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type WarehouseContact is serialized a snake-case JSON is expected")]
+  [TestMethod(DisplayName = "When an object of type WarehouseContact is serialized, a snake-case JSON is expected")]
   public void Serialize_WarehouseContact_CorrectJsonReturned()
   {
     // Arrange

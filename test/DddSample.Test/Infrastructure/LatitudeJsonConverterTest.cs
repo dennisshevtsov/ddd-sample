@@ -15,7 +15,7 @@ public sealed class LatitudeJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type Latitude is serialized a number is expected")]
+  [TestMethod(DisplayName = "When an object of type Latitude is serialized, a number is expected")]
   public void Serialize_Latitude_CorrectJsonReturned()
   {
     // Arrange

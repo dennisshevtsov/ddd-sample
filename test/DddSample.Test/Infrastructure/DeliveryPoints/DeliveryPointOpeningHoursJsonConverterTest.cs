@@ -21,7 +21,7 @@ public sealed class DeliveryPointOpeningHoursJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type DeliveryPointOpeningHours is serialized a snake-case JSON is expected")]
+  [TestMethod(DisplayName = "When an object of type DeliveryPointOpeningHours is serialized, a snake-case JSON is expected")]
   public void Serialize_DeliveryPointOpeningHours_CorrectJsonReturned()
   {
     // Arrange

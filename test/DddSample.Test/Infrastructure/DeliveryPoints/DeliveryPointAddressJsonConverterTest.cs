@@ -24,7 +24,7 @@ public sealed class DeliveryPointAddressJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type DeliveryPointAddress is serialized a snake-case JSON is expected")]
+  [TestMethod(DisplayName = "When an object of type DeliveryPointAddress is serialized, a snake-case JSON is expected")]
   public void Serialize_DeliveryPointAddress_CorrectJsonReturned()
   {
     // Arrange

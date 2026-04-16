@@ -15,7 +15,7 @@ public sealed class AddressJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type Address is serialized a string is expected")]
+  [TestMethod(DisplayName = "When an object of type Address is serialized, a string is expected")]
   public void Serialize_Address_CorrectJsonReturned()
   {
     // Arrange

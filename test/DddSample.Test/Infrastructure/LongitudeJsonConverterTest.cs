@@ -15,7 +15,7 @@ public sealed class LongitudeJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type Longitude is serialized a number is expected")]
+  [TestMethod(DisplayName = "When an object of type Longitude is serialized, a number is expected")]
   public void Serialize_Longitude_CorrectJsonReturned()
   {
     // Arrange

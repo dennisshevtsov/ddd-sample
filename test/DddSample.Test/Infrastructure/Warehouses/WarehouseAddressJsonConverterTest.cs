@@ -24,7 +24,7 @@ public sealed class WarehouseAddressJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type WarehouseAddress is serialized a snake-case JSON is expected")]
+  [TestMethod(DisplayName = "When an object of type WarehouseAddress is serialized, a snake-case JSON is expected")]
   public void Serialize_WarehouseAddress_CorrectJsonReturned()
   {
     // Arrange

@@ -21,7 +21,7 @@ public sealed class CoordinatesJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type Coordinates is serialized a snake-case JSON is expected")]
+  [TestMethod(DisplayName = "When an object of type Coordinates is serialized, a snake-case JSON is expected")]
   public void Serialize_Coordinates_CorrectJsonReturned()
   {
     // Arrange
