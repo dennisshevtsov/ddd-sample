@@ -11,6 +11,10 @@ public sealed class DeliveryPointOpeningHoursJsonConverterTest
 {
   private readonly JsonSerializerOptions _jsonSerializerOptions = new()
   {
+    WriteIndented = true,
+    IndentCharacter = ' ',
+    IndentSize = 2,
+
     PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
     Converters =
     {
@@ -40,15 +44,15 @@ public sealed class DeliveryPointOpeningHoursJsonConverterTest
 
     // Assert
     string expected = @"{
-      ""works_on_holidays"": true,
-      ""mon"": ""09:00-22:00"",
-      ""tue"": ""09:00-22:00"",
-      ""wed"": ""09:00-22:00"",
-      ""thu"": ""09:00-22:00"",
-      ""fri"": ""09:00-22:00"",
-      ""sat"": ""10:00-20:30"",
-      ""sun"": ""10:00-20:30""
-    }";
-    Assert.IsTrue(expected.JsonEquals(actual));
+  ""works_on_holidays"": true,
+  ""mon"": ""09:00-22:00"",
+  ""tue"": ""09:00-22:00"",
+  ""wed"": ""09:00-22:00"",
+  ""thu"": ""09:00-22:00"",
+  ""fri"": ""09:00-22:00"",
+  ""sat"": ""10:00-20:30"",
+  ""sun"": ""10:00-20:30""
+}";
+    Assert.AreEqual(expected, actual);
   }
 }

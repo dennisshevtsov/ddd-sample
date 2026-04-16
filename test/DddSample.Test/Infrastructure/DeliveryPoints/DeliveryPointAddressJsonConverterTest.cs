@@ -11,6 +11,10 @@ public sealed class DeliveryPointAddressJsonConverterTest
 {
   private readonly JsonSerializerOptions _jsonSerializerOptions = new()
   {
+    WriteIndented = true,
+    IndentCharacter = ' ',
+    IndentSize = 2,
+
     PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
     Converters =
     {
@@ -41,12 +45,12 @@ public sealed class DeliveryPointAddressJsonConverterTest
 
     // Assert
     string expected = @"{
-      ""address"": ""test address"",
-      ""coordinates"": {
-        ""latitude"": 1,
-        ""longitude"": 2
-      }
-    }";
-    Assert.IsTrue(expected.JsonEquals(actual));
+  ""address"": ""test address"",
+  ""coordinates"": {
+    ""latitude"": 1,
+    ""longitude"": 2
+  }
+}";
+    Assert.AreEqual(expected, actual);
   }
 }
