@@ -1,5 +1,4 @@
-﻿using DddSample.Domain;
-using DddSample.Domain.DeliveryPoints;
+﻿using DddSample.Domain.DeliveryPoints;
 using DddSample.Domain.Merchants;
 using DddSample.Domain.Warehouses;
 using DddSample.Infrastructure.Test;
@@ -18,6 +17,7 @@ public sealed class DeliveryPointRepositoryTest
 
   private MerchantBuilder _merchantBuilder;
   private WarehouseBuilder _warehouseBuilder;
+  private DeliveryPointBuilder _deliveryPointBuilder;
 
   public TestContext TestContext { get; set; }
 
@@ -32,21 +32,16 @@ public sealed class DeliveryPointRepositoryTest
 
     await _context.Database.EnsureCreatedAsync();
 
-    _merchantBuilder = new MerchantBuilder();
-    Merchant merchant = _merchantBuilder.Id(MerchantId.New())
-                                        .Name("test merchant name")
-                                        .Build();
+    _merchantBuilder = MerchantBuilder.Default();
+    Merchant merchant = _merchantBuilder.Build();
     _context.Add(merchant);
 
-    _warehouseBuilder = new WarehouseBuilder();
-    Warehouse warehouse = _warehouseBuilder.Id(WarehouseId.New())
-                                           .Address(Address.Parse("test warehouse address"))
-                                           .Coordinates(new Coordinates(new Latitude(1D), new Longitude(2D)))
-                                           .Email(Email.Parse("test@test"))
-                                           .Phone(Phone.Parse("375331234567"))
-                                           .MerchantId(merchant.Id)
-                                           .Build();
+    _warehouseBuilder = WarehouseBuilder.Default()
+                                        .MerchantId(merchant.Id);
+    Warehouse warehouse = _warehouseBuilder.Build();
     _context.Add(warehouse);
+
+    _deliveryPointBuilder = DeliveryPointBuilder.Default();
 
     await _context.SaveChangesAsync();
   }
@@ -66,37 +61,13 @@ public sealed class DeliveryPointRepositoryTest
     }
   }
 
-  [TestMethod]
+  [TestMethod(DisplayName = "When a new instance of class DeliveryPoint added, a new record is saved to the DB")]
   [Timeout(5000, CooperativeCancellation = true)]
   public async Task CommitAsync_NewDeliveryPoint_DeliveryPointSaved()
   {
     // Arrange
-    DeliveryPointId deliveryPointId = DeliveryPointId.New();
-    DeliveryPoint deliveryPointToSave = new
-    (
-      id: deliveryPointId,
-      address: new DeliveryPointAddress
-      (
-        address: Address.Parse("test address"),
-        coordinates: new Coordinates
-        (
-          latitude: new Latitude(1D),
-          longitude: new Longitude(2D)
-        )
-      ),
-      openingHours: new DeliveryPointOpeningHours
-      (
-        worksOnHolidays: true,
-        mon: new TimePeriod(from: new TimeOnly(hour: 09, minute: 00), to: new TimeOnly(hour: 22, minute: 00)),
-        tue: new TimePeriod(from: new TimeOnly(hour: 09, minute: 00), to: new TimeOnly(hour: 22, minute: 00)),
-        wed: new TimePeriod(from: new TimeOnly(hour: 09, minute: 00), to: new TimeOnly(hour: 22, minute: 00)),
-        thu: new TimePeriod(from: new TimeOnly(hour: 09, minute: 00), to: new TimeOnly(hour: 22, minute: 00)),
-        fri: new TimePeriod(from: new TimeOnly(hour: 09, minute: 00), to: new TimeOnly(hour: 22, minute: 00)),
-        sat: new TimePeriod(from: new TimeOnly(hour: 10, minute: 00), to: new TimeOnly(hour: 20, minute: 30)),
-        sun: new TimePeriod(from: new TimeOnly(hour: 10, minute: 00), to: new TimeOnly(hour: 20, minute: 30))
-      ),
-      warehouseId: _warehouseBuilder.WarehouseId
-    );
+    DeliveryPoint deliveryPointToSave = _deliveryPointBuilder.WarehouseId(_warehouseBuilder.WarehouseId)
+                                                             .Build();
 
     _deliveryPointRepository.Add(deliveryPointToSave);
 

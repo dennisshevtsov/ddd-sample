@@ -1,27 +1,30 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.Merchants;
+using Microsoft.EntityFrameworkCore;
 
 namespace DddSample.Infrastructure.Merchants;
 
-internal sealed class MerchantRepository : IMerchantRepository
+internal sealed class MerchantRepository(DbContext context) : IMerchantRepository
 {
-  public Task<Merchant?> GetAsync(MerchantId id, CancellationToken cancellationToken = default)
+  public async Task<Merchant?> GetAsync(MerchantId id, CancellationToken cancellationToken = default)
   {
-    throw new NotImplementedException();
+    return await context.Set<Merchant>()
+                        .Where(merchant => merchant.Id == id)
+                        .FirstOrDefaultAsync();
   }
 
-  public Task AddAsync(Merchant merchant, CancellationToken cancellationToken = default)
+  public void Add(Merchant merchant)
   {
-    throw new NotImplementedException();
+    context.Add(merchant);
   }
 
-  public Task DeleteAsync(Merchant merchant, CancellationToken cancellationToken = default)
+  public void Delete(Merchant merchant)
   {
-    throw new NotImplementedException();
+    context.Remove(merchant);
   }
 
   public Task CommitAsync(CancellationToken cancellationToken = default)
   {
-    throw new NotImplementedException();
+    return context.SaveChangesAsync();
   }
 }

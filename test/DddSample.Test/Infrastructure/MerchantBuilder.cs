@@ -30,4 +30,10 @@ internal sealed class MerchantBuilder
       name: _name
     );
   }
+
+  internal static MerchantBuilder Default()
+  {
+    return new MerchantBuilder().Id(MerchantId.New())
+                                .Name("test merchant name");
+  }
 }

@@ -1,6 +1,6 @@
-﻿using DddSample.Domain;
-using DddSample.Domain.Merchants;
+﻿using DddSample.Domain.Merchants;
 using DddSample.Domain.Warehouses;
+using DddSample.Infrastructure.Test;
 using DddSample.Test;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,8 +11,11 @@ namespace DddSample.Infrastructure.Warehouses.Test;
 public sealed class WarehouseRepositoryTest
 {
   private IServiceScope _scope;
-  private DbContext _context1;
-  private DbContext _context2;
+  private DbContext _context;
+  private IWarehouseRepository _warehouseRepository;
+
+  private MerchantBuilder _merchantBuilder;
+  private WarehouseBuilder _warehouseBuilder;
 
   public TestContext TestContext { get; set; }
 
@@ -22,10 +25,18 @@ public sealed class WarehouseRepositoryTest
     DddSampleWebApplicationFactory factory = new();
 
     _scope = factory.Services.CreateScope();
-    _context1 = _scope.ServiceProvider.GetRequiredService<DbContext>();
-    _context2 = _scope.ServiceProvider.GetRequiredService<DbContext>();
+    _context = _scope.ServiceProvider.GetRequiredService<DbContext>();
+    _warehouseRepository = _scope.ServiceProvider.GetRequiredService<IWarehouseRepository>();
 
-    await _context1.Database.EnsureCreatedAsync();
+    await _context.Database.EnsureCreatedAsync();
+
+    _merchantBuilder = MerchantBuilder.Default();
+    Merchant merchant = _merchantBuilder.Build();
+    _context.Add(merchant);
+    await _context.SaveChangesAsync();
+
+    _warehouseBuilder = WarehouseBuilder.Default()
+                                        .MerchantId(merchant.Id);
   }
 
   [TestCleanup]
@@ -33,7 +44,7 @@ public sealed class WarehouseRepositoryTest
   {
     try
     {
-      await _context1.Database.EnsureDeletedAsync();
+      await _context.Database.EnsureDeletedAsync();
     }
     finally
     {
@@ -41,71 +52,39 @@ public sealed class WarehouseRepositoryTest
     }
   }
 
-  [TestMethod]
+  [TestMethod(DisplayName = "When a new instance of class Warehouse added, a new record is saved to the DB")]
   [Timeout(5000, CooperativeCancellation = true)]
-  public async Task SaveChangesAsync_NewMerchant_MerchantSaved()
+  public async Task CommitAsync_NewWarehouse_WarehouseSaved()
   {
     // Arrange
-    MerchantId merchantId = MerchantId.New();
-    Merchant merchantToSave = new
-    (
-      id: merchantId,
-      name: "test merchant name"
-    );
-
-    WarehouseId warehouseId = WarehouseId.New();
-    string address = "test address";
-    double latitude = 1D;
-    double longitude = 2D;
-    string phone = "375331234567";
-    string email = "test@test";
-    Warehouse warehouseToSave = new
-    (
-      id: warehouseId,
-      address: new WarehouseAddress
-      (
-        address: Address.Parse(address),
-        coordinates: new Coordinates
-        (
-          latitude: new Latitude(latitude),
-          longitude: new Longitude(longitude)
-        )
-      ),
-      contact: new WarehouseContact
-      (
-        phones: [Phone.Parse(phone)],
-        emails: [Email.Parse(email)]
-      ),
-      merchantId
-    );
-
-    _context1.Add(merchantToSave);
-    _context1.Add(warehouseToSave);
+    Warehouse warehouseToSave = _warehouseBuilder.Build();
+    _warehouseRepository.Add(warehouseToSave);
 
     // Act
-    await _context1.SaveChangesAsync(TestContext.CancellationToken);
+    await _warehouseRepository.CommitAsync(TestContext.CancellationToken);
 
     // Assert
-    Warehouse? warehouseInDb = await _context2.Set<Warehouse>()
-                                              .AsNoTracking()
-                                              .SingleOrDefaultAsync(TestContext.CancellationToken);
+    Warehouse expected = _warehouseBuilder.Build();
+    Warehouse? actual = await _context.Set<Warehouse>()
+                                      .AsNoTracking()
+                                      .SingleOrDefaultAsync(TestContext.CancellationToken);
 
-    Assert.IsNotNull(warehouseInDb);
-    Assert.AreEqual(warehouseId, warehouseInDb.Id);
-    Assert.AreEqual(merchantId, warehouseInDb.MerchantId);
+    Assert.IsNotNull(actual);
+    Assert.AreEqual(expected.Id, actual.Id);
+    Assert.AreEqual(expected.MerchantId, actual.MerchantId);
 
-    Assert.IsNotNull(warehouseInDb.Address);
-    Assert.AreEqual(address, warehouseInDb.Address.Address);
-    Assert.AreEqual(new Coordinates((Latitude)latitude, (Longitude)longitude), warehouseInDb.Address.Coordinates);
+    Assert.IsNotNull(actual.Address);
+    Assert.AreEqual(expected.Address.Address, actual.Address.Address);
+    Assert.AreEqual(expected.Address.Coordinates, actual.Address.Coordinates);
 
-    Assert.IsNotNull(warehouseInDb.Contact);
-    Assert.IsNotNull(warehouseInDb.Contact.Phones);
-    Assert.HasCount(1, warehouseInDb.Contact.Phones);
-    Assert.AreEqual(phone, warehouseInDb.Contact.Phones[0]);
+    Assert.IsNotNull(actual.Contact);
+    Assert.IsNotNull(actual.Contact.Phones);
+    Assert.HasCount(1, actual.Contact.Phones);
+    Assert.AreEqual(expected.Contact.Phones[0], actual.Contact.Phones[0]);
 
-    Assert.IsNotNull(warehouseInDb.Contact);
-    Assert.IsNotNull(warehouseInDb.Contact.Emails);
-    Assert.HasCount(1, warehouseInDb.Contact.Emails);
-    Assert.AreEqual(email, warehouseInDb.Contact.Emails[0]);
+    Assert.IsNotNull(actual.Contact);
+    Assert.IsNotNull(actual.Contact.Emails);
+    Assert.HasCount(1, actual.Contact.Emails);
+    Assert.AreEqual(expected.Contact.Emails[0], actual.Contact.Emails[0]);
   }
 }

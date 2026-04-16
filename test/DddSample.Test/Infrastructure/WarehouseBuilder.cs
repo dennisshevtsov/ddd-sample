@@ -68,4 +68,13 @@ internal sealed class WarehouseBuilder
       merchantId: _merchantId
     );
   }
+
+  internal static WarehouseBuilder Default()
+  {
+    return new WarehouseBuilder().Id(WarehouseId.New())
+                                 .Address(Domain.Address.Parse("test warehouse address"))
+                                 .Coordinates(new Coordinates(new Latitude(1D), new Longitude(2D)))
+                                 .Email(Domain.Email.Parse("test@test"))
+                                 .Phone(Domain.Phone.Parse("375331234567"));
+  }
 }
