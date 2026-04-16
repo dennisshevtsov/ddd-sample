@@ -36,4 +36,22 @@ public sealed class TimePeriodJsonConverterTest
     string expected = "\"14:57-23:17\"";
     Assert.AreEqual(expected, actual);
   }
+
+  [TestMethod(DisplayName = "When a JSON of an object of type TimePeriod is serialized an object of type TimePeriod is expected")]
+  public void Deserialize_Json_CorrectObjectReturned()
+  {
+    // Arrange
+    string value = "\"14:57-23:17\"";
+
+    // Act
+    TimePeriod? actual = JsonSerializer.Deserialize<TimePeriod>(value, _jsonSerializerOptions);
+
+    // Assert
+    TimePeriod expected = new
+    (
+      from: new TimeOnly(hour: 14, minute: 57),
+      to: new TimeOnly(hour: 23, minute: 17)
+    );
+    Assert.AreEqual(expected, actual);
+  }
 }

@@ -4,11 +4,11 @@ using DddSample.Domain.Warehouses;
 using DddSample.Test;
 using Microsoft.EntityFrameworkCore;
 
-namespace DddSample.Infrastructure.Test;
+namespace DddSample.Infrastructure.Warehouses.Test;
 
 [TestClass]
 [TestCategory("Integration")]
-public sealed class WarehouseTest
+public sealed class WarehouseRepositoryTest
 {
   private IServiceScope _scope;
   private DbContext _context1;

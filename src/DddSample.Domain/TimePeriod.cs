@@ -59,7 +59,7 @@ public readonly struct TimePeriod : IEquatable<TimePeriod>
     }
 
     TimeOnly from = TimeOnly.Parse(trimmed[0..5]);
-    TimeOnly to = TimeOnly.Parse(trimmed[6..10]);
+    TimeOnly to = TimeOnly.Parse(trimmed[6..11]);
     TimePeriod period = new(from, to);
     return period;
   }

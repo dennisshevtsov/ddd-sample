@@ -2,8 +2,6 @@
 
 public sealed class Warehouse
 {
-  private Warehouse() { }
-
   public Warehouse(WarehouseId id, WarehouseAddress address, WarehouseContact contact, MerchantId merchantId)
   {
     Id = id;

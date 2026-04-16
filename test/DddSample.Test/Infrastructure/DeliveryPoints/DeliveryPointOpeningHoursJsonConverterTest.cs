@@ -53,4 +53,45 @@ public sealed class DeliveryPointOpeningHoursJsonConverterTest
 }";
     Assert.AreEqual(expected, actual);
   }
+
+  [TestMethod(DisplayName = "When a JSON of an object of type DeliveryPointOpeningHours is deserialized, an object of type DeliveryPointOpeningHours is expected")]
+  public void Deserialize_Json_CorrectObjectReturned()
+  {
+    // Arrange
+    string json = @"{
+  ""works_on_holidays"": true,
+  ""mon"": ""09:00-22:00"",
+  ""tue"": ""09:00-22:00"",
+  ""wed"": ""09:00-22:00"",
+  ""thu"": ""09:00-22:00"",
+  ""fri"": ""09:00-22:00"",
+  ""sat"": ""10:00-20:30"",
+  ""sun"": ""10:00-20:30""
+}";
+
+    // Act
+    DeliveryPointOpeningHours? actual = JsonSerializer.Deserialize<DeliveryPointOpeningHours>(json, _jsonSerializerOptions);
+
+    // Assert
+    DeliveryPointOpeningHours expected = new
+    (
+      worksOnHolidays: true,
+      mon: new TimePeriod(from: new TimeOnly(hour: 09, minute: 00), to: new TimeOnly(hour: 22, minute: 00)),
+      tue: new TimePeriod(from: new TimeOnly(hour: 09, minute: 00), to: new TimeOnly(hour: 22, minute: 00)),
+      wed: new TimePeriod(from: new TimeOnly(hour: 09, minute: 00), to: new TimeOnly(hour: 22, minute: 00)),
+      thu: new TimePeriod(from: new TimeOnly(hour: 09, minute: 00), to: new TimeOnly(hour: 22, minute: 00)),
+      fri: new TimePeriod(from: new TimeOnly(hour: 09, minute: 00), to: new TimeOnly(hour: 22, minute: 00)),
+      sat: new TimePeriod(from: new TimeOnly(hour: 10, minute: 00), to: new TimeOnly(hour: 20, minute: 30)),
+      sun: new TimePeriod(from: new TimeOnly(hour: 10, minute: 00), to: new TimeOnly(hour: 20, minute: 30))
+    );
+    Assert.IsNotNull(actual);
+    Assert.AreEqual(expected.WorksOnHolidays, actual.WorksOnHolidays);
+    Assert.AreEqual(expected.Mon, actual.Mon);
+    Assert.AreEqual(expected.Tue, actual.Tue);
+    Assert.AreEqual(expected.Wed, actual.Wed);
+    Assert.AreEqual(expected.Thu, actual.Thu);
+    Assert.AreEqual(expected.Fri, actual.Fri);
+    Assert.AreEqual(expected.Sat, actual.Sat);
+    Assert.AreEqual(expected.Sun, actual.Sun);
+  }
 }

@@ -1,27 +1,21 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.DeliveryPoints;
+using Microsoft.EntityFrameworkCore;
 
 namespace DddSample.Infrastructure.DeliveryPoints;
 
-public sealed class DeliveryPointRepository : IDeliveryPointRepository
+public sealed class DeliveryPointRepository(DbContext context) : IDeliveryPointRepository
 {
-  public Task<DeliveryPoint?> GetAsync(DeliveryPointId id, CancellationToken cancellationToken = default)
+  public async Task<DeliveryPoint?> GetAsync(DeliveryPointId id, CancellationToken cancellationToken = default)
   {
-    throw new NotImplementedException();
+    return await context.Set<DeliveryPoint>()
+                        .Where(deliveryPoint => deliveryPoint.Id == id)
+                        .FirstOrDefaultAsync();
   }
 
-  public Task AddAsync(DeliveryPoint deliveryPoint, CancellationToken cancellationToken = default)
-  {
-    throw new NotImplementedException();
-  }
+  public void Add(DeliveryPoint deliveryPoint) => context.Add(deliveryPoint);
 
-  public Task DeleteAsync(DeliveryPoint deliveryPoint, CancellationToken cancellationToken = default)
-  {
-    throw new NotImplementedException();
-  }
+  public void Delete(DeliveryPoint deliveryPoint) => context.Remove(deliveryPoint);
 
-  public Task CommitAsync(CancellationToken cancellationToken = default)
-  {
-    throw new NotImplementedException();
-  }
+  public Task CommitAsync(CancellationToken cancellationToken = default) => context.SaveChangesAsync(cancellationToken);
 }
