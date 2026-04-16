@@ -2,9 +2,10 @@
 using DddSample.Domain.DeliveryPoints;
 using DddSample.Domain.Merchants;
 using DddSample.Domain.Warehouses;
+using DddSample.Test;
 using Microsoft.EntityFrameworkCore;
 
-namespace DddSample.Test.Infrastructure;
+namespace DddSample.Infrastructure.Test;
 
 [TestClass]
 [TestCategory("Integration")]

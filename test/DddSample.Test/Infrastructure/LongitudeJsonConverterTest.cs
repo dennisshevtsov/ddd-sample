@@ -1,8 +1,7 @@
 ﻿using DddSample.Domain;
-using DddSample.Infrastructure;
 using System.Text.Json;
 
-namespace DddSample.Test.Infrastructure;
+namespace DddSample.Infrastructure.Test;
 
 [TestClass]
 public sealed class LongitudeJsonConverterTest

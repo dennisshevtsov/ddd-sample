@@ -1,10 +1,8 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.Warehouses;
-using DddSample.Infrastructure;
-using DddSample.Infrastructure.Warehouses;
 using System.Text.Json;
 
-namespace DddSample.Test.Infrastructure.Warehouses;
+namespace DddSample.Infrastructure.Warehouses.Test;
 
 [TestClass]
 public sealed class WarehouseAddressJsonConverterTest

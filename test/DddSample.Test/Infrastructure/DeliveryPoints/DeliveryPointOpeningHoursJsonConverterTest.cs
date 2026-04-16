@@ -1,10 +1,8 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.DeliveryPoints;
-using DddSample.Infrastructure;
-using DddSample.Infrastructure.DeliveryPoints;
 using System.Text.Json;
 
-namespace DddSample.Test.Infrastructure.DeliveryPoints;
+namespace DddSample.Infrastructure.DeliveryPoints.Test;
 
 [TestClass]
 public sealed class DeliveryPointOpeningHoursJsonConverterTest

@@ -1,8 +1,9 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.Merchants;
+using DddSample.Test;
 using Microsoft.EntityFrameworkCore;
 
-namespace DddSample.Test.Infrastructure;
+namespace DddSample.Infrastructure.Test;
 
 [TestClass]
 [TestCategory("Integration")]
