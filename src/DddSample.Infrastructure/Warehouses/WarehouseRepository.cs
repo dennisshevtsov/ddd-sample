@@ -4,22 +4,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DddSample.Infrastructure.Warehouses;
 
-internal sealed class WarehouseRepository(DbContext dbContext) : IWarehouseRepository
+internal sealed class WarehouseRepository(EfUnitOfWork uow) : IWarehouseRepository
 {
   public Task<Warehouse?> GetAsync(WarehouseId id, CancellationToken cancellationToken = default)
   {
-    return dbContext.Set<Warehouse>()
-                    .Where(warehouse => warehouse.Id == id)
-                    .FirstOrDefaultAsync(cancellationToken);
+    return uow.AsQueryable<Warehouse>()
+              .Where(warehouse => warehouse.Id == id)
+              .FirstOrDefaultAsync(cancellationToken);
   }
 
-  public void Add(Warehouse warehouse) => dbContext.Add(warehouse);
+  public void Add(Warehouse warehouse) => uow.Add(warehouse);
 
-  public void Delete(Warehouse warehouse)
-  {
-    dbContext.Set<Warehouse>()
-             .Remove(warehouse);
-  }
-
-  public Task CommitAsync(CancellationToken cancellationToken = default) => dbContext.SaveChangesAsync(cancellationToken);
+  public void Remove(Warehouse warehouse) => uow.Remove(warehouse);
 }

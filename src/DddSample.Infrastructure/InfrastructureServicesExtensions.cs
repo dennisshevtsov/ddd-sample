@@ -1,4 +1,5 @@
-﻿using DddSample.Domain.DeliveryPoints;
+﻿using DddSample.Domain;
+using DddSample.Domain.DeliveryPoints;
 using DddSample.Domain.Merchants;
 using DddSample.Domain.Warehouses;
 using DddSample.Infrastructure;
@@ -18,7 +19,6 @@ public static class InfrastructureServicesExtensions
     ArgumentNullException.ThrowIfNull(configSectionPath);
 
     services.AddOptions<DddSampleDbSettings>().BindConfiguration(configSectionPath);
-
     services.AddDbContext<DbContext, DddSampleDbContext>((provider, builder) =>
     {
       DddSampleDbSettings dbSettings = provider.GetRequiredService<IOptions<DddSampleDbSettings>>().Value;
@@ -26,6 +26,8 @@ public static class InfrastructureServicesExtensions
 
       builder.UseNpgsql(dbSettings.ConnectionString);
     });
+
+    services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 
     services.AddScoped<IDeliveryPointRepository, DeliveryPointRepository>();
     services.AddScoped<IMerchantRepository, MerchantRepository>();

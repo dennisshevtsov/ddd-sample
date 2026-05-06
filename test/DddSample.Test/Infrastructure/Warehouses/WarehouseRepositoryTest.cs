@@ -1,4 +1,5 @@
-﻿using DddSample.Domain.Merchants;
+﻿using DddSample.Domain;
+using DddSample.Domain.Merchants;
 using DddSample.Domain.Warehouses;
 using DddSample.Infrastructure.Test;
 using DddSample.Test;
@@ -12,6 +13,7 @@ public sealed class WarehouseRepositoryTest
 {
   private IServiceScope _scope;
   private DbContext _context;
+  private IUnitOfWork _uow;
   private IWarehouseRepository _warehouseRepository;
 
   private MerchantBuilder _merchantBuilder;
@@ -26,6 +28,7 @@ public sealed class WarehouseRepositoryTest
 
     _scope = factory.Services.CreateScope();
     _context = _scope.ServiceProvider.GetRequiredService<DbContext>();
+    _uow = _scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
     _warehouseRepository = _scope.ServiceProvider.GetRequiredService<IWarehouseRepository>();
 
     await _context.Database.EnsureCreatedAsync();
@@ -61,7 +64,7 @@ public sealed class WarehouseRepositoryTest
     _warehouseRepository.Add(warehouseToSave);
 
     // Act
-    await _warehouseRepository.CommitAsync(TestContext.CancellationToken);
+    await _uow.CommitAsync(TestContext.CancellationToken);
 
     // Assert
     Warehouse expected = _warehouseBuilder.Build();

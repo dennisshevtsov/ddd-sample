@@ -4,27 +4,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DddSample.Infrastructure.Merchants;
 
-internal sealed class MerchantRepository(DbContext context) : IMerchantRepository
+internal sealed class MerchantRepository(EfUnitOfWork uow) : IMerchantRepository
 {
   public async Task<Merchant?> GetAsync(MerchantId id, CancellationToken cancellationToken = default)
   {
-    return await context.Set<Merchant>()
-                        .Where(merchant => merchant.Id == id)
-                        .FirstOrDefaultAsync();
+    return await uow.AsQueryable<Merchant>()
+                    .Where(merchant => merchant.Id == id)
+                    .FirstOrDefaultAsync();
   }
 
-  public void Add(Merchant merchant)
-  {
-    context.Add(merchant);
-  }
+  public void Add(Merchant merchant) => uow.Add(merchant);
 
-  public void Delete(Merchant merchant)
-  {
-    context.Remove(merchant);
-  }
-
-  public Task CommitAsync(CancellationToken cancellationToken = default)
-  {
-    return context.SaveChangesAsync();
-  }
+  public void Remove(Merchant merchant) => uow.Remove(merchant);
 }
