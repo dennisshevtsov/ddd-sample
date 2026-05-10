@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="DddSample.Test" />
+    <InternalsVisibleTo Include="DddSample.Infrastructure.UnitTest" />
   </ItemGroup>
 
 </Project>

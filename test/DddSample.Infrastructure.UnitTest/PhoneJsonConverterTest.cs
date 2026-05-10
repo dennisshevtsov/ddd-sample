@@ -1,10 +1,8 @@
 ﻿using DddSample.Domain;
-using DddSample.Infrastructure;
 using System.Text.Json;
 
-namespace DddSample.Test.Infrastructure;
+namespace DddSample.Infrastructure.UnitTest;
 
-[TestClass]
 public sealed class PhoneJsonConverterTest
 {
   private readonly JsonSerializerOptions _jsonSerializerOptions = new()
@@ -20,7 +18,7 @@ public sealed class PhoneJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type Phone is serialized, a string is expected")]
+  [Fact(DisplayName = "When an object of type Phone is serialized, a string is expected")]
   public void Serialize_Phone_CorrectJsonReturned()
   {
     // Arrange
@@ -31,6 +29,6 @@ public sealed class PhoneJsonConverterTest
 
     // Assert
     string expected = "\"375331234567\"";
-    Assert.AreEqual(expected, actual);
+    Assert.Equal(expected, actual);
   }
 }

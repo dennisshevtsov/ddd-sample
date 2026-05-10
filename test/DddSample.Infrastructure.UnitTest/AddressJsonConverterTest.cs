@@ -1,9 +1,8 @@
 ﻿using DddSample.Domain;
 using System.Text.Json;
 
-namespace DddSample.Infrastructure.Test;
+namespace DddSample.Infrastructure.UnitTest;
 
-[TestClass]
 public sealed class AddressJsonConverterTest
 {
   private readonly JsonSerializerOptions _jsonSerializerOptions = new()
@@ -15,7 +14,7 @@ public sealed class AddressJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type Address is serialized, a string is expected")]
+  [Fact(DisplayName = "When an object of type Address is serialized, a string is expected")]
   public void Serialize_Address_CorrectJsonReturned()
   {
     // Arrange
@@ -26,6 +25,6 @@ public sealed class AddressJsonConverterTest
 
     // Assert
     string expected = "\"test address\"";
-    Assert.AreEqual(expected, actual);
+    Assert.Equal(expected, actual);
   }
 }
