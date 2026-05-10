@@ -7,8 +7,12 @@ internal sealed class EfUnitOfWork(DbContext context) : IUnitOfWork
 {
   public async Task CommitAsync(CancellationToken cancellationToken = default)
   {
+    HashSet<Type> changedAggregates = GetChangedAggregates();
+    if (changedAggregates.Count > 1)
+    {
+      throw new DomainException($"Forgidden to modify 2+ aggregate in 1 transation. Aggregates: {string.Join(", ", changedAggregates)}");
+    }
     await context.SaveChangesAsync(cancellationToken);
-    Untrack();
   }
 
   internal IQueryable<T> AsQueryable<T>() where T : class
@@ -16,31 +20,21 @@ internal sealed class EfUnitOfWork(DbContext context) : IUnitOfWork
     return context.Set<T>();
   }
 
-  internal void Add<T>(T entity) where T : class
+  internal void Add<T>(T entity) where T : class, IAggregate
   {
-    Track<T>();
     context.Set<T>().Add(entity);
   }
 
-  internal void Remove<T>(T entity) where T : class
+  internal void Remove<T>(T entity) where T : class, IAggregate
   {
-    Track<T>();
     context.Set<T>().Remove(entity);
   }
 
-  private Type? _tracked;
-  private void Track<T>() where T : class
-  {
-    if (_tracked is null)
-    {
-      _tracked = typeof(T);
-      return;
-    }
-
-    if (_tracked != typeof(T))
-    {
-      throw new DomainException("Impossible to modify 2+ aggregate in 1 transation");
-    }
-  }
-  private void Untrack() => _tracked = null;
+  private HashSet<Type> GetChangedAggregates() =>
+    context.ChangeTracker
+           .Entries()
+           .Where(entry => entry.State != EntityState.Unchanged)
+           .Where(entry => typeof(IAggregate).IsAssignableFrom(entry.Entity.GetType()))
+           .Select(entry => entry.Entity.GetType())
+           .ToHashSet();
 }

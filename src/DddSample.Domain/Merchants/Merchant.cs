@@ -1,6 +1,6 @@
 ﻿namespace DddSample.Domain.Merchants;
 
-public sealed class Merchant
+public sealed class Merchant : IAggregate
 {
   public Merchant(MerchantId id, string? name = null)
   {
