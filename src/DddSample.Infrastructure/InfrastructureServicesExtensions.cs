@@ -28,6 +28,7 @@ public static class InfrastructureServicesExtensions
     });
 
     services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+    services.AddScoped<EfUnitOfWork, EfUnitOfWork>();
 
     services.AddScoped<IDeliveryPointRepository, DeliveryPointRepository>();
     services.AddScoped<IMerchantRepository, MerchantRepository>();
