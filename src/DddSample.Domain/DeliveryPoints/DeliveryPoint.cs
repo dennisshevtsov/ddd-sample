@@ -1,6 +1,6 @@
 ﻿namespace DddSample.Domain.DeliveryPoints;
 
-public sealed class DeliveryPoint
+public sealed class DeliveryPoint : IAggregate
 {
   public DeliveryPoint(DeliveryPointId id, DeliveryPointAddress address, DeliveryPointOpeningHours openingHours, WarehouseId warehouseId)
   {

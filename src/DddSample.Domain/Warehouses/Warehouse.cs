@@ -1,6 +1,6 @@
 ﻿namespace DddSample.Domain.Warehouses;
 
-public sealed class Warehouse
+public sealed class Warehouse : IAggregate
 {
   public Warehouse(WarehouseId id, WarehouseAddress address, WarehouseContact contact, MerchantId merchantId)
   {

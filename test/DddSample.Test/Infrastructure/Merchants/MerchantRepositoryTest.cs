@@ -1,4 +1,5 @@
-﻿using DddSample.Domain.Merchants;
+﻿using DddSample.Domain;
+using DddSample.Domain.Merchants;
 using DddSample.Infrastructure.Test;
 using DddSample.Test;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ public sealed class MerchantRepositoryTest
 {
   private IServiceScope _scope;
   private DbContext _context;
+  private IUnitOfWork _uow;
   private IMerchantRepository _merchantRepository;
 
   private MerchantBuilder _merchantBuilder;
@@ -24,6 +26,7 @@ public sealed class MerchantRepositoryTest
 
     _scope = factory.Services.CreateScope();
     _context = _scope.ServiceProvider.GetRequiredService<DbContext>();
+    _uow = _scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
     _merchantRepository = _scope.ServiceProvider.GetRequiredService<IMerchantRepository>();
 
     await _context.Database.EnsureCreatedAsync();
@@ -53,7 +56,7 @@ public sealed class MerchantRepositoryTest
     _merchantRepository.Add(merchantToSave);
 
     // Act
-    await _merchantRepository.CommitAsync(TestContext.CancellationToken);
+    await _uow.CommitAsync(TestContext.CancellationToken);
 
     // Assert
     Merchant expected = _merchantBuilder.Build();

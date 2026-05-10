@@ -1,4 +1,5 @@
-﻿using DddSample.Domain.DeliveryPoints;
+﻿using DddSample.Domain;
+using DddSample.Domain.DeliveryPoints;
 using DddSample.Domain.Merchants;
 using DddSample.Domain.Warehouses;
 using DddSample.Infrastructure.Test;
@@ -13,6 +14,7 @@ public sealed class DeliveryPointRepositoryTest
 {
   private IServiceScope _scope;
   private DbContext _context;
+  private IUnitOfWork _uow;
   private IDeliveryPointRepository _deliveryPointRepository;
 
   private MerchantBuilder _merchantBuilder;
@@ -28,6 +30,7 @@ public sealed class DeliveryPointRepositoryTest
 
     _scope = factory.Services.CreateScope();
     _context = _scope.ServiceProvider.GetRequiredService<DbContext>();
+    _uow = _scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
     _deliveryPointRepository = _scope.ServiceProvider.GetRequiredService<IDeliveryPointRepository>();
 
     await _context.Database.EnsureCreatedAsync();
@@ -68,11 +71,10 @@ public sealed class DeliveryPointRepositoryTest
     // Arrange
     DeliveryPoint deliveryPointToSave = _deliveryPointBuilder.WarehouseId(_warehouseBuilder.WarehouseId)
                                                              .Build();
-
     _deliveryPointRepository.Add(deliveryPointToSave);
 
     // Act
-    await _deliveryPointRepository.CommitAsync(TestContext.CancellationToken);
+    await _uow.CommitAsync(TestContext.CancellationToken);
 
     // Assert
     DeliveryPoint? deliveryPointInDb = await _context.Set<DeliveryPoint>()

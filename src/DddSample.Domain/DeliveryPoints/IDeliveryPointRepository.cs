@@ -4,6 +4,5 @@ public interface IDeliveryPointRepository
 {
   public Task<DeliveryPoint?> GetAsync(DeliveryPointId id, CancellationToken cancellationToken = default);
   public void Add(DeliveryPoint deliveryPoint);
-  public void Delete(DeliveryPoint deliveryPoint);
-  public Task CommitAsync(CancellationToken cancellationToken = default);
+  public void Remove(DeliveryPoint deliveryPoint);
 }
