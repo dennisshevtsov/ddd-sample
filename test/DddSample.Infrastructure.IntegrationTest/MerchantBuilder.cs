@@ -1,7 +1,7 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.Merchants;
 
-namespace DddSample.Infrastructure.Test;
+namespace DddSample.Infrastructure.IntegrationTest;
 
 internal sealed class MerchantBuilder
 {

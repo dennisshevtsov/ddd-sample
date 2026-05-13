@@ -1,9 +1,8 @@
 ﻿using DddSample.Domain;
 using System.Text.Json;
 
-namespace DddSample.Infrastructure.Test;
+namespace DddSample.Infrastructure.UnitTest;
 
-[TestClass]
 public sealed class LatitudeJsonConverterTest
 {
   private readonly JsonSerializerOptions _jsonSerializerOptions = new()
@@ -15,7 +14,7 @@ public sealed class LatitudeJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type Latitude is serialized, a number is expected")]
+  [Fact(DisplayName = "When an object of type Latitude is serialized, a number is expected")]
   public void Serialize_Latitude_CorrectJsonReturned()
   {
     // Arrange
@@ -26,6 +25,6 @@ public sealed class LatitudeJsonConverterTest
 
     // Assert
     string expected = "12.34";
-    Assert.AreEqual(expected, actual);
+    Assert.Equal(expected, actual);
   }
 }

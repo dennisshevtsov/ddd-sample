@@ -11,9 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DddSample.Application", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DddSample.Resources", "src\DddSample.Resources\DddSample.Resources.csproj", "{6667F20D-C51F-4C8A-B982-4D660990C008}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DddSample.Test", "test\DddSample.Test\DddSample.Test.csproj", "{E8B99621-3A30-4139-B8BC-C0875BBF1473}"
-EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DddSample.Infrastructure.UnitTest", "test\DddSample.Infrastructure.UnitTest\DddSample.Infrastructure.UnitTest.csproj", "{CA91509F-B015-4205-995B-9E480CFB5025}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DddSample.Infrastructure.IntegrationTest", "test\DddSample.Infrastructure.IntegrationTest\DddSample.Infrastructure.IntegrationTest.csproj", "{55291DBA-B8AD-4C8E-AC4A-71FBAF035798}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +39,18 @@ Global
 		{6667F20D-C51F-4C8A-B982-4D660990C008}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6667F20D-C51F-4C8A-B982-4D660990C008}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6667F20D-C51F-4C8A-B982-4D660990C008}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E8B99621-3A30-4139-B8BC-C0875BBF1473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8B99621-3A30-4139-B8BC-C0875BBF1473}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8B99621-3A30-4139-B8BC-C0875BBF1473}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8B99621-3A30-4139-B8BC-C0875BBF1473}.Release|Any CPU.Build.0 = Release|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA91509F-B015-4205-995B-9E480CFB5025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA91509F-B015-4205-995B-9E480CFB5025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA91509F-B015-4205-995B-9E480CFB5025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA91509F-B015-4205-995B-9E480CFB5025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55291DBA-B8AD-4C8E-AC4A-71FBAF035798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55291DBA-B8AD-4C8E-AC4A-71FBAF035798}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55291DBA-B8AD-4C8E-AC4A-71FBAF035798}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55291DBA-B8AD-4C8E-AC4A-71FBAF035798}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

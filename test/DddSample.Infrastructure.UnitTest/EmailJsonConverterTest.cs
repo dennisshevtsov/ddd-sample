@@ -1,9 +1,8 @@
 ﻿using DddSample.Domain;
 using System.Text.Json;
 
-namespace DddSample.Infrastructure.Test;
+namespace DddSample.Infrastructure.UnitTest;
 
-[TestClass]
 public sealed class EmailJsonConverterTest
 {
   private readonly JsonSerializerOptions _jsonSerializerOptions = new()
@@ -19,7 +18,7 @@ public sealed class EmailJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type Email is serialized, a string is expected")]
+  [Fact(DisplayName = "When an object of type Email is serialized, a string is expected")]
   public void Serialize_Email_CorrectJsonReturned()
   {
     // Arrange
@@ -30,6 +29,6 @@ public sealed class EmailJsonConverterTest
 
     // Assert
     string expected = "\"test@test\"";
-    Assert.AreEqual(expected, actual);
+    Assert.Equal(expected, actual);
   }
 }

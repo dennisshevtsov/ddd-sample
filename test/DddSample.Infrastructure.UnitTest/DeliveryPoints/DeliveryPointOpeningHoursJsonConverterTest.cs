@@ -2,9 +2,8 @@
 using DddSample.Domain.DeliveryPoints;
 using System.Text.Json;
 
-namespace DddSample.Infrastructure.DeliveryPoints.Test;
+namespace DddSample.Infrastructure.DeliveryPoints.UnitTest;
 
-[TestClass]
 public sealed class DeliveryPointOpeningHoursJsonConverterTest
 {
   private readonly JsonSerializerOptions _jsonSerializerOptions = new()
@@ -21,7 +20,7 @@ public sealed class DeliveryPointOpeningHoursJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type DeliveryPointOpeningHours is serialized, a snake-case JSON is expected")]
+  [Fact(DisplayName = "When an object of type DeliveryPointOpeningHours is serialized, a snake-case JSON is expected")]
   public void Serialize_DeliveryPointOpeningHours_CorrectJsonReturned()
   {
     // Arrange
@@ -51,10 +50,10 @@ public sealed class DeliveryPointOpeningHoursJsonConverterTest
   ""sat"": ""10:00-20:30"",
   ""sun"": ""10:00-20:30""
 }";
-    Assert.AreEqual(expected, actual);
+    Assert.Equal(expected, actual);
   }
 
-  [TestMethod(DisplayName = "When a JSON of an object of type DeliveryPointOpeningHours is deserialized, an object of type DeliveryPointOpeningHours is expected")]
+  [Fact(DisplayName = "When a JSON of an object of type DeliveryPointOpeningHours is deserialized, an object of type DeliveryPointOpeningHours is expected")]
   public void Deserialize_Json_CorrectObjectReturned()
   {
     // Arrange
@@ -84,14 +83,14 @@ public sealed class DeliveryPointOpeningHoursJsonConverterTest
       sat: new TimePeriod(from: new TimeOnly(hour: 10, minute: 00), to: new TimeOnly(hour: 20, minute: 30)),
       sun: new TimePeriod(from: new TimeOnly(hour: 10, minute: 00), to: new TimeOnly(hour: 20, minute: 30))
     );
-    Assert.IsNotNull(actual);
-    Assert.AreEqual(expected.WorksOnHolidays, actual.WorksOnHolidays);
-    Assert.AreEqual(expected.Mon, actual.Mon);
-    Assert.AreEqual(expected.Tue, actual.Tue);
-    Assert.AreEqual(expected.Wed, actual.Wed);
-    Assert.AreEqual(expected.Thu, actual.Thu);
-    Assert.AreEqual(expected.Fri, actual.Fri);
-    Assert.AreEqual(expected.Sat, actual.Sat);
-    Assert.AreEqual(expected.Sun, actual.Sun);
+    Assert.NotNull(actual);
+    Assert.Equal(expected.WorksOnHolidays, actual.WorksOnHolidays);
+    Assert.Equal(expected.Mon, actual.Mon);
+    Assert.Equal(expected.Tue, actual.Tue);
+    Assert.Equal(expected.Wed, actual.Wed);
+    Assert.Equal(expected.Thu, actual.Thu);
+    Assert.Equal(expected.Fri, actual.Fri);
+    Assert.Equal(expected.Sat, actual.Sat);
+    Assert.Equal(expected.Sun, actual.Sun);
   }
 }

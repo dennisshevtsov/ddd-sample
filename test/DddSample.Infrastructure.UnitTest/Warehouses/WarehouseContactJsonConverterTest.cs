@@ -2,9 +2,8 @@
 using DddSample.Domain.Warehouses;
 using System.Text.Json;
 
-namespace DddSample.Infrastructure.Warehouses.Test;
+namespace DddSample.Infrastructure.Warehouses.UnitTest;
 
-[TestClass]
 public sealed class WarehouseContactJsonConverterTest
 {
   private readonly JsonSerializerOptions _jsonSerializerOptions = new()
@@ -22,7 +21,7 @@ public sealed class WarehouseContactJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type WarehouseContact is serialized, a snake-case JSON is expected")]
+  [Fact(DisplayName = "When an object of type WarehouseContact is serialized, a snake-case JSON is expected")]
   public void Serialize_WarehouseContact_CorrectJsonReturned()
   {
     // Arrange
@@ -36,14 +35,17 @@ public sealed class WarehouseContactJsonConverterTest
     string actual = JsonSerializer.Serialize(contact, _jsonSerializerOptions);
 
     // Assert
-    string expected = @"{
-  ""emails"": [
-    ""test@test""
-  ],
-  ""phones"": [
-    ""375331234567""
-  ]
-}";
-    Assert.AreEqual(expected, actual);
+    string expected =
+      """
+      {
+        "emails": [
+          "test@test"
+        ],
+        "phones": [
+          "375331234567"
+        ]
+      }
+      """;
+    Assert.Equal(expected, actual);
   }
 }

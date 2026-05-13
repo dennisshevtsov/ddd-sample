@@ -2,55 +2,51 @@
 using DddSample.Domain.DeliveryPoints;
 using DddSample.Domain.Merchants;
 using DddSample.Domain.Warehouses;
-using DddSample.Infrastructure.Test;
-using DddSample.Test;
+using DddSample.Infrastructure.IntegrationTest;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace DddSample.Infrastructure.DeliveryPoints.Test;
+namespace DddSample.Infrastructure.DeliveryPoints.IntegrationTest;
 
-[TestClass]
-[TestCategory("Integration")]
-public sealed class DeliveryPointRepositoryTest
+public sealed class DeliveryPointRepositoryTest : IClassFixture<DddSampleWebApplicationFactory>, IAsyncLifetime
 {
-  private IServiceScope _scope;
-  private DbContext _context;
-  private IUnitOfWork _uow;
-  private IDeliveryPointRepository _deliveryPointRepository;
+  private readonly IServiceScope _scope;
+  private readonly DbContext _context;
+  private readonly IUnitOfWork _uow;
+  private readonly IDeliveryPointRepository _deliveryPointRepository;
 
-  private MerchantBuilder _merchantBuilder;
-  private WarehouseBuilder _warehouseBuilder;
-  private DeliveryPointBuilder _deliveryPointBuilder;
+  private readonly MerchantBuilder _merchantBuilder;
+  private readonly WarehouseBuilder _warehouseBuilder;
+  private readonly DeliveryPointBuilder _deliveryPointBuilder;
 
-  public TestContext TestContext { get; set; }
-
-  [TestInitialize]
-  public async Task InitializeAsync()
+  public DeliveryPointRepositoryTest(DddSampleWebApplicationFactory factory)
   {
-    DddSampleWebApplicationFactory factory = new();
-
     _scope = factory.Services.CreateScope();
     _context = _scope.ServiceProvider.GetRequiredService<DbContext>();
     _uow = _scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
     _deliveryPointRepository = _scope.ServiceProvider.GetRequiredService<IDeliveryPointRepository>();
 
-    await _context.Database.EnsureCreatedAsync();
 
     _merchantBuilder = MerchantBuilder.Default();
+    _warehouseBuilder = WarehouseBuilder.Default();
+    _deliveryPointBuilder = DeliveryPointBuilder.Default();
+  }
+
+  public async ValueTask InitializeAsync()
+  {
+    await _context.Database.EnsureCreatedAsync();
+
     Merchant merchant = _merchantBuilder.Build();
     _context.Add(merchant);
 
-    _warehouseBuilder = WarehouseBuilder.Default()
-                                        .MerchantId(merchant.Id);
-    Warehouse warehouse = _warehouseBuilder.Build();
+    Warehouse warehouse = _warehouseBuilder.MerchantId(merchant.Id)
+                                           .Build();
     _context.Add(warehouse);
-
-    _deliveryPointBuilder = DeliveryPointBuilder.Default();
 
     await _context.SaveChangesAsync();
   }
 
-  [TestCleanup]
-  public async Task CleanupAsync()
+  public async ValueTask DisposeAsync()
   {
     try
     {
@@ -64,8 +60,7 @@ public sealed class DeliveryPointRepositoryTest
     }
   }
 
-  [TestMethod(DisplayName = "When a new instance of class DeliveryPoint added, a new record is saved to the DB")]
-  [Timeout(5000, CooperativeCancellation = true)]
+  [Fact(DisplayName = "When a new instance of class DeliveryPoint added, a new record is saved to the DB")]
   public async Task CommitAsync_NewDeliveryPoint_DeliveryPointSaved()
   {
     // Arrange
@@ -74,12 +69,12 @@ public sealed class DeliveryPointRepositoryTest
     _deliveryPointRepository.Add(deliveryPointToSave);
 
     // Act
-    await _uow.CommitAsync(TestContext.CancellationToken);
+    await _uow.CommitAsync(TestContext.Current.CancellationToken);
 
     // Assert
     DeliveryPoint? deliveryPointInDb = await _context.Set<DeliveryPoint>()
                                                      .AsNoTracking()
-                                                     .SingleOrDefaultAsync(TestContext.CancellationToken);
-    Assert.IsNotNull(deliveryPointInDb);
+                                                     .SingleOrDefaultAsync(TestContext.Current.CancellationToken);
+    Assert.NotNull(deliveryPointInDb);
   }
 }

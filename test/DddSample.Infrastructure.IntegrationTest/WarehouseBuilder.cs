@@ -1,15 +1,15 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.Warehouses;
 
-namespace DddSample.Infrastructure.Test;
+namespace DddSample.Infrastructure.IntegrationTest;
 
 internal sealed class WarehouseBuilder
 {
   private WarehouseId _id;
   private Address _address;
   private Coordinates _coordinates;
-  private List<Email> _emails = new();
-  private List<Phone> _phones = new();
+  private List<Email> _emails = [];
+  private List<Phone> _phones = [];
   private MerchantId _merchantId;
 
   internal WarehouseId WarehouseId => _id;

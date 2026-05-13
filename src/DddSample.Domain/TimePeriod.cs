@@ -26,7 +26,7 @@ public readonly struct TimePeriod : IEquatable<TimePeriod>
   {
     if (obj is null) return false;
     if (obj is not TimePeriod other) return false;
-    return Equals(this, other);
+    return Equals(other);
   }
 
   public bool Equals(TimePeriod other) => _from == other._from && _to == other._to;

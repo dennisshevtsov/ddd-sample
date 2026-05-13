@@ -1,9 +1,8 @@
 ﻿using DddSample.Domain;
 using System.Text.Json;
 
-namespace DddSample.Infrastructure.Test;
+namespace DddSample.Infrastructure.UnitTest;
 
-[TestClass]
 public sealed class CoordinatesJsonConverterTest
 {
   private readonly JsonSerializerOptions _jsonSerializerOptions = new()
@@ -21,7 +20,7 @@ public sealed class CoordinatesJsonConverterTest
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type Coordinates is serialized, a snake-case JSON is expected")]
+  [Fact(DisplayName = "When an object of type Coordinates is serialized, a snake-case JSON is expected")]
   public void Serialize_Coordinates_CorrectJsonReturned()
   {
     // Arrange
@@ -35,10 +34,13 @@ public sealed class CoordinatesJsonConverterTest
     string actual = JsonSerializer.Serialize(coordinates, _jsonSerializerOptions);
 
     // Assert
-    string expected = @"{
-  ""latitude"": 1,
-  ""longitude"": 2
-}";
-    Assert.AreEqual(expected, actual);
+    string expected =
+      """
+      {
+        "latitude": 1,
+        "longitude": 2
+      }
+      """;
+    Assert.Equal(expected, actual);
   }
 }

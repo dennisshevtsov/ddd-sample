@@ -1,11 +1,10 @@
 ﻿using DddSample.Domain;
-using DddSample.Domain.DeliveryPoints;
+using DddSample.Domain.Warehouses;
 using System.Text.Json;
 
-namespace DddSample.Infrastructure.DeliveryPoints.Test;
+namespace DddSample.Infrastructure.Warehouses.UnitTest;
 
-[TestClass]
-public sealed class DeliveryPointAddressJsonConverterTest
+public sealed class WarehouseAddressJsonConverterTest
 {
   private readonly JsonSerializerOptions _jsonSerializerOptions = new()
   {
@@ -18,17 +17,17 @@ public sealed class DeliveryPointAddressJsonConverterTest
     {
       new AddressJsonConverter(),
       new CoordinatesJsonConverter(),
-      new DeliveryPointAddressJsonConverter(),
+      new WarehouseAddressJsonConverter(),
       new LatitudeJsonConverter(),
       new LongitudeJsonConverter(),
     },
   };
 
-  [TestMethod(DisplayName = "When an object of type DeliveryPointAddress is serialized, a snake-case JSON is expected")]
-  public void Serialize_DeliveryPointAddress_CorrectJsonReturned()
+  [Fact(DisplayName = "When an object of type WarehouseAddress is serialized, a snake-case JSON is expected")]
+  public void Serialize_WarehouseAddress_CorrectJsonReturned()
   {
     // Arrange
-    DeliveryPointAddress address = new
+    WarehouseAddress address = new
     (
       address: Address.Parse("test address"),
       coordinates: new Coordinates
@@ -42,13 +41,16 @@ public sealed class DeliveryPointAddressJsonConverterTest
     string actual = JsonSerializer.Serialize(address, _jsonSerializerOptions);
 
     // Assert
-    string expected = @"{
-  ""address"": ""test address"",
-  ""coordinates"": {
-    ""latitude"": 1,
-    ""longitude"": 2
-  }
-}";
-    Assert.AreEqual(expected, actual);
+    string expected = 
+      """
+      {
+        "address": "test address",
+        "coordinates": {
+          "latitude": 1,
+          "longitude": 2
+        }
+      }
+      """;
+    Assert.Equal(expected, actual);
   }
 }
