@@ -41,13 +41,16 @@ public sealed class DeliveryPointAddressJsonConverterTest
     string actual = JsonSerializer.Serialize(address, _jsonSerializerOptions);
 
     // Assert
-    string expected = @"{
-  ""address"": ""test address"",
-  ""coordinates"": {
-    ""latitude"": 1,
-    ""longitude"": 2
-  }
-}";
+    string expected =
+    """
+    {
+      "address": "test address",
+      "coordinates": {
+        "latitude": 1,
+        "longitude": 2
+      }
+    }
+    """;
     Assert.Equal(expected, actual);
   }
 }

@@ -1,22 +1,21 @@
 ﻿using DddSample.Domain;
-using DddSample.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
-namespace DddSample.Test.Infrastructure;
+namespace DddSample.Infrastructure.UnitTest;
 
-[TestClass]
 public sealed class EfUnitOfWorkTest
 {
-  private EfUnitOfWork _uow;
+  private readonly DbContext _context;
+  private readonly EfUnitOfWork _uow;
 
-  [TestInitialize]
-  public void Initialize()
+  public EfUnitOfWorkTest()
   {
     DbContextOptions<TestDbContext> options = new DbContextOptionsBuilder<TestDbContext>().UseInMemoryDatabase("test-db").Options;
-    _uow = new EfUnitOfWork(new TestDbContext(options));
+    _context = new TestDbContext(options);
+    _uow = new EfUnitOfWork(_context);
   }
 
-  [TestMethod]
+  [Fact]
   public async Task CommitAsync_1AggregateAdded_ExceptionNotThrown()
   {
     // Arrage
@@ -29,7 +28,7 @@ public sealed class EfUnitOfWorkTest
     await act();
   }
 
-  [TestMethod]
+  [Fact]
   public async Task CommitAsync_2SameAggregateAdded_ExceptionNotThrown()
   {
     // Arrage
@@ -46,7 +45,7 @@ public sealed class EfUnitOfWorkTest
     await act();
   }
 
-  [TestMethod]
+  [Fact]
   public async Task CommitAsync_2DifferentAggregateAdded_ExceptionThrown()
   {
     // Arrage
@@ -60,14 +59,15 @@ public sealed class EfUnitOfWorkTest
     Task act() => _uow.CommitAsync();
 
     // Assert
-    await Assert.ThrowsExactlyAsync<DomainException>(act);
+    await Assert.ThrowsAsync<DomainException>(act);
   }
 
-  [TestMethod]
+  [Fact]
   public async Task CommitAsync_1AggregateRemoved_ExceptionNotThrown()
   {
     // Arrage
     TestAggregate1 entity1 = new();
+    _context.Add(entity1);
     _uow.Remove(entity1);
 
     // Act
@@ -77,14 +77,17 @@ public sealed class EfUnitOfWorkTest
     await act();
   }
 
-  [TestMethod]
+  [Fact]
   public async Task CommitAsync_2SameAggregateRemoved_ExceptionNotThrown()
   {
     // Arrage
     TestAggregate1 entity1 = new();
-    _uow.Remove(entity1);
-
     TestAggregate1 entity2 = new();
+
+    _context.Add(entity1);
+    _context.Add(entity2);
+
+    _uow.Remove(entity1);
     _uow.Remove(entity2);
 
     // Act
@@ -94,7 +97,7 @@ public sealed class EfUnitOfWorkTest
     await act();
   }
 
-  [TestMethod]
+  [Fact]
   public async Task CommitAsync_2DifferentAggregateRemoved_ExceptionThrown()
   {
     // Arrage
@@ -108,7 +111,7 @@ public sealed class EfUnitOfWorkTest
     Task act() => _uow.CommitAsync();
 
     // Assert
-    await Assert.ThrowsExactlyAsync<DomainException>(act);
+    await Assert.ThrowsAsync<DomainException>(act);
   }
 
   private sealed class TestDbContext(DbContextOptions options) : DbContext(options)
