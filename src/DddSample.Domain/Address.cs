@@ -22,7 +22,7 @@ public readonly struct Address : IEquatable<Address>
   {
     if (obj == null) return false;
     if (obj is not Address other) return false;
-    return Equals(this, other);
+    return Equals(other);
   }
 
   public bool Equals(Address other) => _address == other._address;
