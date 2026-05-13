@@ -26,7 +26,6 @@ public sealed class DeliveryPointRepositoryTest : IClassFixture<DddSampleWebAppl
     _uow = _scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
     _deliveryPointRepository = _scope.ServiceProvider.GetRequiredService<IDeliveryPointRepository>();
 
-
     _merchantBuilder = MerchantBuilder.Default();
     _warehouseBuilder = WarehouseBuilder.Default();
     _deliveryPointBuilder = DeliveryPointBuilder.Default();
