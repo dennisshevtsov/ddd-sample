@@ -1,8 +1,5 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.Merchants;
-using DddSample.Domain.Warehouses;
-using DddSample.Resources.Warehouses;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace DddSample.Resources.Merchants;
 
@@ -20,16 +17,7 @@ internal static class MerchantResourceMapping
 
   internal static Merchant ToEntity(this MerchantResource resource)
   {
-    string? name = resource.Name;
-    ArgumentNullException.ThrowIfNull(name);
-
-    Merchant merchant = new
-    (
-      id: MerchantId.New(),
-      name: name
-    );
-
-    return merchant;
+    return resource.ToEntity(merchantId: MerchantId.New());
   }
 
   internal static Merchant ToEntity(this MerchantResource resource, MerchantId merchantId)
