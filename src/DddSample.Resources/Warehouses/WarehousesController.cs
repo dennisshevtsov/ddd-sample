@@ -1,14 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DddSample.Domain;
+using DddSample.Domain.Warehouses;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
 
 namespace DddSample.Resources.Warehouses;
 
 [ApiController]
-[Route("api/v1/warehouses")]
+[Route("api/v1/merchant/{merchantId}/warehouses")]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
 public sealed class WarehousesController : ControllerBase
 {
+  private readonly IWarehouseRepository _warehouseRepository;
+  private readonly IUnitOfWork _unitOfWork;
+
+  public WarehousesController(IWarehouseRepository warehouseRepository, IUnitOfWork unitOfWork)
+  {
+    _warehouseRepository = warehouseRepository;
+    _unitOfWork = unitOfWork;
+  }
+
   /// <summary>
   /// Gets a warehouse by its ID.
   /// </summary>
@@ -17,7 +29,30 @@ public sealed class WarehousesController : ControllerBase
   [HttpGet("{id}", Name = "GetWarehouse")]
   [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WarehouseResource))]
   [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorMetadata))]
-  public IActionResult Get([FromRoute] string id) => Ok(new WarehouseResource { Id = id });
+  public async Task<IActionResult> Get(
+    [FromRoute(Name = "merchantId")][Required] string? merchantIdString,
+    [FromRoute][Required] string? id,
+    CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(merchantIdString);
+    MerchantId merchantId = MerchantId.Parce(merchantIdString);
+
+    ArgumentNullException.ThrowIfNull(id);
+    WarehouseId warehouseId = WarehouseId.Parce(id);
+
+    Warehouse? warehouse = await _warehouseRepository.GetAsync(warehouseId, cancellationToken);
+    if (warehouse is null)
+    {
+      return NotFound();
+    }
+    if (warehouse.MerchantId != merchantId)
+    {
+      return Forbid();
+    }
+
+    WarehouseResource warehouseResource = warehouse.ToResource();
+    return Ok(warehouseResource);
+  }
 
   /// <summary>
   /// Gets a list of warehouses that satisfy to conditions in the filter.
@@ -41,17 +76,31 @@ public sealed class WarehousesController : ControllerBase
   /// Create a new warehause.
   /// </summary>
   /// <param name="resource">The warehouse.</param>
-  /// <param name="resourceId">The optional ID of a request to deduplicate requests. Use a random generated value.</param>
-  /// <param name="validateOnly">If this field is true, no chages will be applied, the method will only validate the request.</param>
   [HttpPost(Name = "CreateWarehouse")]
   [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(WarehouseResource))]
   [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorMetadata))]
-  public IActionResult Create([FromBody] WarehouseResource resource) => CreatedAtAction
-  (
-    actionName: nameof(Get),
-    routeValues: new { id = "test" },
-    value: resource
-  );
+  public async Task<IActionResult> Create(
+    [FromRoute(Name = "merchantId")][Required] string? merchantIdString,
+    [FromBody][Required] WarehouseResource? resource,
+    CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(merchantIdString);
+    MerchantId merchantId = MerchantId.Parce(merchantIdString);
+
+    ArgumentNullException.ThrowIfNull(resource);
+
+    Warehouse warehouse = resource.ToEntity(merchantId);
+    _warehouseRepository.Add(warehouse);
+    await _unitOfWork.CommitAsync(cancellationToken);
+
+    WarehouseResource createdResource = warehouse.ToResource();
+    return CreatedAtAction
+    (
+      actionName: nameof(Get),
+      routeValues: new { id = warehouse.Id, },
+      value: createdResource
+    );
+  }
 
   /// <summary>
   /// Replace a warehouse by its ID. If there is no warehouse with this ID, a new warehouse will be created.

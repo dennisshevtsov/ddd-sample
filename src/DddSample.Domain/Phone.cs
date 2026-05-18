@@ -9,7 +9,7 @@ public readonly struct Phone
   private Phone(string phone)
   {
     ArgumentNullException.ThrowIfNullOrWhiteSpace(phone);
-    
+
     if (phone.Length != Length)
     {
       throw new DomainException($"Invalid phone: {phone}. Phone length must be {Length}.");
@@ -26,8 +26,10 @@ public readonly struct Phone
     _phone = phone;
   }
 
+  public override string ToString() => _phone;
+
   public static readonly Phone None;
 
   public static Phone Parse(string phone) => new(phone);
-  public static implicit operator string(Phone phone) => phone._phone;
+  public static implicit operator string(Phone phone) => phone.ToString();
 }

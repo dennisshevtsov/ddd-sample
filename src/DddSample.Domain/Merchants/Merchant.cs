@@ -2,7 +2,7 @@
 
 public sealed class Merchant : IAggregate
 {
-  public Merchant(MerchantId id, string? name = null)
+  public Merchant(MerchantId id, string name)
   {
     Id = id;
     Name = name;
@@ -10,11 +10,11 @@ public sealed class Merchant : IAggregate
 
   public MerchantId Id { get; }
 
-  public string? Name { get; private set; }
+  public string Name { get; private set; }
 
   public bool Deleted { get; private set; }
 
-  public void Replace(string? name)
+  public void Replace(string name)
   {
     Name = name;
   }

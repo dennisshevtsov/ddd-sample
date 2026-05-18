@@ -13,5 +13,4 @@ public sealed class WarehouseAddressResource
   [Required]
   [JsonPropertyName("coordinates")]
   public CoordinatesResource? Coordinates { get; init; }
-
 }
