@@ -68,7 +68,7 @@ public sealed class DeliveryPointController : ControllerBase
     return CreatedAtAction
     (
       actionName: nameof(Get),
-      routeValues: new { id = created.Id, },
+      routeValues: new { id = created.Id },
       value: created
     );
   }

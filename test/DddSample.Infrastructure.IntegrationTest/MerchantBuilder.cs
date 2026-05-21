@@ -6,7 +6,8 @@ namespace DddSample.Infrastructure.IntegrationTest;
 internal sealed class MerchantBuilder
 {
   private MerchantId _id;
-  private string? _name;
+  private string _name = "";
+  private DeliveryPointId _deliveryPointId;
 
   internal MerchantId MerchantId => _id;
 
@@ -16,9 +17,15 @@ internal sealed class MerchantBuilder
     return this;
   }
 
-  internal MerchantBuilder Name(string? name)
+  internal MerchantBuilder Name(string name)
   {
     _name = name;
+    return this;
+  }
+
+  internal MerchantBuilder DeliveryPointId(DeliveryPointId deliveryPointId)
+  {
+    _deliveryPointId = deliveryPointId;
     return this;
   }
 
@@ -27,7 +34,8 @@ internal sealed class MerchantBuilder
     return new
     (
       id: _id,
-      name: _name
+      name: _name,
+      deliveryPointId: _deliveryPointId
     );
   }
 
