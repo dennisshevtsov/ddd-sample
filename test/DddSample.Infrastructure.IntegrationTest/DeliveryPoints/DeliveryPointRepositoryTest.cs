@@ -15,8 +15,6 @@ public sealed class DeliveryPointRepositoryTest : IClassFixture<DddSampleWebAppl
   private readonly IUnitOfWork _uow;
   private readonly IDeliveryPointRepository _deliveryPointRepository;
 
-  private readonly MerchantBuilder _merchantBuilder;
-  private readonly WarehouseBuilder _warehouseBuilder;
   private readonly DeliveryPointBuilder _deliveryPointBuilder;
 
   public DeliveryPointRepositoryTest(DddSampleWebApplicationFactory factory)
@@ -26,8 +24,6 @@ public sealed class DeliveryPointRepositoryTest : IClassFixture<DddSampleWebAppl
     _uow = _scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
     _deliveryPointRepository = _scope.ServiceProvider.GetRequiredService<IDeliveryPointRepository>();
 
-    _merchantBuilder = MerchantBuilder.Default();
-    _warehouseBuilder = WarehouseBuilder.Default();
     _deliveryPointBuilder = DeliveryPointBuilder.Default();
   }
 
@@ -35,14 +31,12 @@ public sealed class DeliveryPointRepositoryTest : IClassFixture<DddSampleWebAppl
   {
     await _context.Database.EnsureCreatedAsync();
 
-    Merchant merchant = _merchantBuilder.Build();
-    _context.Add(merchant);
-
-    Warehouse warehouse = _warehouseBuilder.MerchantId(merchant.Id)
-                                           .Build();
+    Warehouse warehouse = WarehouseBuilder.Default()
+                                          .Build();
     _context.Add(warehouse);
-
     await _context.SaveChangesAsync();
+
+    _deliveryPointBuilder.WarehouseId(warehouse.Id);
   }
 
   public async ValueTask DisposeAsync()
@@ -51,7 +45,6 @@ public sealed class DeliveryPointRepositoryTest : IClassFixture<DddSampleWebAppl
     {
       await _context.Set<DeliveryPoint>().ExecuteDeleteAsync();
       await _context.Set<Warehouse>().ExecuteDeleteAsync();
-      await _context.Set<Merchant>().ExecuteDeleteAsync();
     }
     finally
     {
@@ -63,17 +56,36 @@ public sealed class DeliveryPointRepositoryTest : IClassFixture<DddSampleWebAppl
   public async Task CommitAsync_NewDeliveryPoint_DeliveryPointSaved()
   {
     // Arrange
-    DeliveryPoint deliveryPointToSave = _deliveryPointBuilder.WarehouseId(_warehouseBuilder.WarehouseId)
-                                                             .Build();
+    DeliveryPoint deliveryPointToSave = _deliveryPointBuilder.Build();
     _deliveryPointRepository.Add(deliveryPointToSave);
 
     // Act
     await _uow.CommitAsync(TestContext.Current.CancellationToken);
 
     // Assert
-    DeliveryPoint? deliveryPointInDb = await _context.Set<DeliveryPoint>()
-                                                     .AsNoTracking()
-                                                     .SingleOrDefaultAsync(TestContext.Current.CancellationToken);
-    Assert.NotNull(deliveryPointInDb);
+    DeliveryPoint expected = _deliveryPointBuilder.Build();
+    DeliveryPoint? actual = await _context.Set<DeliveryPoint>()
+                                          .AsNoTracking()
+                                          .Where(deliveryPoint => deliveryPoint.Id == deliveryPointToSave.Id)
+                                          .SingleOrDefaultAsync(TestContext.Current.CancellationToken);
+
+    Assert.NotNull(actual);
+    Assert.Equal(expected.Id, actual.Id);
+
+    Assert.NotNull(actual.Address);
+    Assert.Equal(expected.Address.Address, actual.Address.Address);
+    Assert.Equal(expected.Address.Coordinates, actual.Address.Coordinates);
+
+    Assert.NotNull(actual.OpeningHours);
+    Assert.Equal(expected.OpeningHours.WorksOnHolidays, actual.OpeningHours.WorksOnHolidays);
+    Assert.Equal(expected.OpeningHours.Mon, actual.OpeningHours.Mon);
+    Assert.Equal(expected.OpeningHours.Tue, actual.OpeningHours.Tue);
+    Assert.Equal(expected.OpeningHours.Wed, actual.OpeningHours.Wed);
+    Assert.Equal(expected.OpeningHours.Thu, actual.OpeningHours.Thu);
+    Assert.Equal(expected.OpeningHours.Fri, actual.OpeningHours.Fri);
+    Assert.Equal(expected.OpeningHours.Sat, actual.OpeningHours.Sat);
+    Assert.Equal(expected.OpeningHours.Sun, actual.OpeningHours.Sun);
+
+    Assert.Equal(expected.WarehouseId, actual.WarehouseId);
   }
 }

@@ -1,5 +1,4 @@
 ﻿using DddSample.Domain;
-using DddSample.Domain.Merchants;
 using DddSample.Domain.Warehouses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +12,6 @@ public sealed class WarehouseRepositoryTest : IClassFixture<DddSampleWebApplicat
   private readonly IUnitOfWork _uow;
   private readonly IWarehouseRepository _warehouseRepository;
 
-  private readonly MerchantBuilder _merchantBuilder;
   private readonly WarehouseBuilder _warehouseBuilder;
 
   public WarehouseRepositoryTest(DddSampleWebApplicationFactory factory)
@@ -23,26 +21,18 @@ public sealed class WarehouseRepositoryTest : IClassFixture<DddSampleWebApplicat
     _uow = _scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
     _warehouseRepository = _scope.ServiceProvider.GetRequiredService<IWarehouseRepository>();
 
-    _merchantBuilder = MerchantBuilder.Default();
     _warehouseBuilder = WarehouseBuilder.Default();
   }
 
   public async ValueTask InitializeAsync()
   {
     await _context.Database.EnsureCreatedAsync();
-
-    Merchant merchant = _merchantBuilder.Build();
-    _context.Add(merchant);
-    await _context.SaveChangesAsync();
-
-    _warehouseBuilder.MerchantId(merchant.Id);
   }
 
   public async ValueTask DisposeAsync()
   {
     try
     {
-      await _context.Set<Merchant>().ExecuteDeleteAsync();
       await _context.Set<Warehouse>().ExecuteDeleteAsync();
     }
     finally
@@ -70,7 +60,6 @@ public sealed class WarehouseRepositoryTest : IClassFixture<DddSampleWebApplicat
 
     Assert.NotNull(actual);
     Assert.Equal(expected.Id, actual.Id);
-    Assert.Equal(expected.MerchantId, actual.MerchantId);
 
     Assert.NotNull(actual.Address);
     Assert.Equal(expected.Address.Address, actual.Address.Address);

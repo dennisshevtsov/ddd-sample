@@ -10,7 +10,6 @@ internal sealed class WarehouseBuilder
   private Coordinates _coordinates;
   private List<Email> _emails = [];
   private List<Phone> _phones = [];
-  private MerchantId _merchantId;
 
   internal WarehouseId WarehouseId => _id;
 
@@ -44,12 +43,6 @@ internal sealed class WarehouseBuilder
     return this;
   }
 
-  internal WarehouseBuilder MerchantId(in MerchantId merchantId)
-  {
-    _merchantId = merchantId;
-    return this;
-  }
-
   internal Warehouse Build()
   {
     return new Warehouse
@@ -64,8 +57,7 @@ internal sealed class WarehouseBuilder
       (
         emails: _emails,
         phones: _phones
-      ),
-      merchantId: _merchantId
+      )
     );
   }
 

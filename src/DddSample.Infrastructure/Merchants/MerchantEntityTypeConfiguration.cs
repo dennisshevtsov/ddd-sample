@@ -1,5 +1,7 @@
 ﻿using DddSample.Domain;
+using DddSample.Domain.DeliveryPoints;
 using DddSample.Domain.Merchants;
+using DddSample.Domain.Warehouses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,5 +21,14 @@ internal sealed class MerchantEntityTypeConfiguration : IEntityTypeConfiguration
            .HasConversion(id => id.ToString(), id => MerchantId.Parce(id));
     builder.Property(entity => entity.Name).HasColumnName("name");
     builder.Property(entity => entity.Deleted).HasColumnName("deleted").IsRequired();
+
+    builder.Property(entity => entity.DeliveryPointId)
+           .HasColumnName("delivery_point_id")
+           .IsRequired();
+    builder.HasOne(typeof(DeliveryPoint))
+           .WithMany()
+           .HasForeignKey(nameof(Merchant.DeliveryPointId))
+           .HasPrincipalKey(nameof(DeliveryPoint.Id))
+           .HasConstraintName("fk_merchant_delivery_point");
   }
 }

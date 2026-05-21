@@ -1,5 +1,7 @@
 ﻿using DddSample.Domain;
+using DddSample.Domain.DeliveryPoints;
 using DddSample.Domain.Merchants;
+using DddSample.Domain.Warehouses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,12 +29,27 @@ public sealed class MerchantRepositoryTest : IClassFixture<DddSampleWebApplicati
   public async ValueTask InitializeAsync()
   {
     await _context.Database.EnsureCreatedAsync();
+
+    Warehouse warehouse = WarehouseBuilder.Default()
+                                          .Build();
+    _context.Add(warehouse);
+    await _context.SaveChangesAsync();
+
+    DeliveryPoint deliveryPoint = DeliveryPointBuilder.Default()
+                                                      .WarehouseId(warehouse.Id)
+                                                      .Build();
+    _context.Add(deliveryPoint);
+    await _context.SaveChangesAsync();
+
+    _merchantBuilder.DeliveryPointId(deliveryPoint.Id);
   }
 
   public async ValueTask DisposeAsync()
   {
     try
     {
+      await _context.Set<DeliveryPoint>().ExecuteDeleteAsync();
+      await _context.Set<Warehouse>().ExecuteDeleteAsync();
       await _context.Set<Merchant>().ExecuteDeleteAsync();
     }
     finally
@@ -61,5 +78,6 @@ public sealed class MerchantRepositoryTest : IClassFixture<DddSampleWebApplicati
     Assert.NotNull(actual);
     Assert.Equal(expected.Id, actual.Id);
     Assert.Equal(expected.Name, actual.Name);
+    Assert.Equal(expected.DeliveryPointId, actual.DeliveryPointId);
   }
 }

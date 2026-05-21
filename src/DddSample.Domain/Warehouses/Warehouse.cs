@@ -2,12 +2,11 @@
 
 public sealed class Warehouse : IAggregate
 {
-  public Warehouse(WarehouseId id, WarehouseAddress address, WarehouseContact contact, MerchantId merchantId)
+  public Warehouse(WarehouseId id, WarehouseAddress address, WarehouseContact contact)
   {
     Id = id;
     Address = address ?? throw new ArgumentNullException(nameof(address));
     Contact = contact ?? throw new ArgumentNullException(nameof(contact));
-    MerchantId = merchantId;
   }
 
   public WarehouseId Id { get; }
@@ -15,7 +14,5 @@ public sealed class Warehouse : IAggregate
   public WarehouseAddress Address { get; }
 
   public WarehouseContact Contact { get; }
-
-  public MerchantId MerchantId { get; }
 }
 
