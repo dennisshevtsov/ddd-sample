@@ -27,7 +27,7 @@ internal static class WarehouseResourceMapping
     };
   }
 
-  internal static Warehouse ToEntity(this WarehouseResource resource, MerchantId merchantId)
+  internal static Warehouse ToEntity(this WarehouseResource resource)
   {
     string? address = resource?.Address?.Address;
     ArgumentNullException.ThrowIfNull(address);
@@ -60,8 +60,7 @@ internal static class WarehouseResourceMapping
       (
         emails: [.. emails.Select(x => Email.Parse(x))],
         phones: [.. phones.Select(x => Phone.Parse(x))]
-      ),
-      merchantId: merchantId
+      )
     );
 
     return warehouse;

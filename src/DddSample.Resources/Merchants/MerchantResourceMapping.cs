@@ -11,6 +11,7 @@ internal static class MerchantResourceMapping
     {
       Id = merchant.Id.ToString(),
       Name = merchant.Name,
+      DeliveryPointId = merchant.DeliveryPointId.ToString(),
       Deleted = merchant.Deleted,
     };
   }
@@ -25,10 +26,14 @@ internal static class MerchantResourceMapping
     string? name = resource.Name;
     ArgumentNullException.ThrowIfNull(name);
 
+    ArgumentNullException.ThrowIfNull(resource.DeliveryPointId);
+    DeliveryPointId deliveryPointId = DeliveryPointId.Parce(resource.DeliveryPointId);
+
     Merchant merchant = new
     (
       id: merchantId,
-      name: name
+      name: name,
+      deliveryPointId: deliveryPointId
     );
 
     return merchant;

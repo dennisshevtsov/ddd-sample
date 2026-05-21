@@ -5,8 +5,8 @@ namespace DddSample.Resources.Warehouses;
 
 public sealed class WarehouseResource
 {
-  [Required]
-  [MaxLength(16)]
+  [MinLength(36)]
+  [MaxLength(36)]
   [JsonPropertyName("id")]
   public string? Id { get; init; } // this fields comes from outside, and we are not resposible for initializing it, so it is nullable despite to the fact that it is required
 

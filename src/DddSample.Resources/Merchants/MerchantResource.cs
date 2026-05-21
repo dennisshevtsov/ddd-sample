@@ -5,7 +5,6 @@ namespace DddSample.Resources.Merchants;
 
 public sealed class MerchantResource
 {
-  [Required]
   [MinLength(36)]
   [MaxLength(36)]
   [JsonPropertyName("id")]
@@ -16,6 +15,12 @@ public sealed class MerchantResource
   [MaxLength(16)]
   [JsonPropertyName("id")]
   public string? Name { get; init; }
+
+  [Required]
+  [MinLength(36)]
+  [MaxLength(36)]
+  [JsonPropertyName("deliveryPointId")]
+  public string? DeliveryPointId { get; init; }
 
   /// <summary>
   /// This field cannot be set or updated directly through CreateMerchant (POST merchant) and UpdaetMerchant (PUT merchant/{id}) methods. Use the DeleteMerchant (DELETE merchant/{id}) or UndeleteMerchant (POST merchant/{id}:undelete) methods.

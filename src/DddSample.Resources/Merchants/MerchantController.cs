@@ -62,55 +62,12 @@ public sealed class MerchantController : ControllerBase
     _merchantRepository.Add(merchant);
     await _unitOfWork.CommitAsync(cancellationToken);
 
-    MerchantResource createdResource = merchant.ToResource();
+    MerchantResource created = merchant.ToResource();
     return CreatedAtAction
     (
       actionName: nameof(Get),
-      routeValues: new { id = createdResource.Id, },
-      value: createdResource
+      routeValues: new { id = created.Id },
+      value: created
     );
-  }
-
-  /// <summary>
-  /// Replace a merchant by its ID. If there is no merchant with this ID, a new merchant will be created.
-  /// </summary>
-  /// <param name="id">The ID of a merchant.</param>
-  /// <param name="resource">The merchant.</param>
-  [HttpPut("{id}", Name = "ReplaceMerchant")]
-  [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MerchantResource))]
-  [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(MerchantResource))]
-  [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ErrorMetadata))]
-  public async Task<IActionResult> Replace(
-    [FromRoute][Required] string? id,
-    [FromBody][Required] MerchantResource? resource,
-    CancellationToken cancellationToken)
-  {
-    ArgumentNullException.ThrowIfNull(id);
-    MerchantId merchantId = MerchantId.Parce(id);
-
-    ArgumentNullException.ThrowIfNull(resource);
-
-    Merchant? merchant = await _merchantRepository.GetAsync(merchantId, cancellationToken);
-    if (merchant is null)
-    {
-      merchant = resource.ToEntity(merchantId);
-      _merchantRepository.Add(merchant);
-      await _unitOfWork.CommitAsync(cancellationToken);
-
-      MerchantResource created = merchant.ToResource();
-      return CreatedAtAction
-      (
-        actionName: nameof(Get),
-        routeValues: new { id = created.Id, },
-        value: created
-      );
-    }
-
-    ArgumentNullException.ThrowIfNull(resource.Name);
-    merchant.Replace(resource.Name);
-    await _unitOfWork.CommitAsync(cancellationToken);
-
-    MerchantResource replaced = merchant.ToResource();
-    return Ok(replaced);
   }
 }
