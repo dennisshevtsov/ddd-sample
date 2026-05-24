@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DddSample.Infrastructure.Un
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DddSample.Infrastructure.IntegrationTest", "test\DddSample.Infrastructure.IntegrationTest\DddSample.Infrastructure.IntegrationTest.csproj", "{55291DBA-B8AD-4C8E-AC4A-71FBAF035798}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DddSample.Resources.IntegrationTest", "test\DddSample.Resources.IntegrationTest\DddSample.Resources.IntegrationTest.csproj", "{20FE3030-0BE7-4545-A0F2-435C2929DC55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{55291DBA-B8AD-4C8E-AC4A-71FBAF035798}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55291DBA-B8AD-4C8E-AC4A-71FBAF035798}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55291DBA-B8AD-4C8E-AC4A-71FBAF035798}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20FE3030-0BE7-4545-A0F2-435C2929DC55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20FE3030-0BE7-4545-A0F2-435C2929DC55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20FE3030-0BE7-4545-A0F2-435C2929DC55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20FE3030-0BE7-4545-A0F2-435C2929DC55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
