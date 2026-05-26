@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DddSample.Application\DddSample.Application.csproj" />
     <ProjectReference Include="..\DddSample.Infrastructure\DddSample.Infrastructure.csproj" />
   </ItemGroup>
 

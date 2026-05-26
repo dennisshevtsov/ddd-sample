@@ -41,7 +41,7 @@ public sealed class WarehouseAddressJsonConverterTest
     string actual = JsonSerializer.Serialize(address, _jsonSerializerOptions);
 
     // Assert
-    string expected = 
+    string expected =
       """
       {
         "address": "test address",
