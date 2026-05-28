@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace DddSample.Resources.DeliveryPoints;
 
-public class DeliveryPointOpeningHoursResource
+public sealed class DeliveryPointOpeningHoursResource
 {
   [Required]
   [JsonPropertyName("worksOnHolidays")]

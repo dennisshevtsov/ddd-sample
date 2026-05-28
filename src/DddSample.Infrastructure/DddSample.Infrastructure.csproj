@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="DddSample.Test" />
-    <InternalsVisibleTo Include="DddSample.Infrastructure.UnitTest" />
+    <InternalsVisibleTo Include="DddSample.IntegrationTests" />
+    <InternalsVisibleTo Include="DddSample.UnitTests" />
   </ItemGroup>
 
 </Project>

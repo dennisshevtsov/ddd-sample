@@ -13,7 +13,7 @@ public sealed class MerchantResource
   [Required]
   [MinLength(2)]
   [MaxLength(16)]
-  [JsonPropertyName("id")]
+  [JsonPropertyName("name")]
   public string? Name { get; init; }
 
   [Required]

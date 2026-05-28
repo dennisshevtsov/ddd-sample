@@ -1,12 +1,11 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.DeliveryPoints;
-using DddSample.Domain.Merchants;
 using DddSample.Domain.Warehouses;
-using DddSample.Infrastructure.IntegrationTest;
+using DddSample.Infrastructure.IntegrationTests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DddSample.Infrastructure.DeliveryPoints.IntegrationTest;
+namespace DddSample.Infrastructure.DeliveryPoints.IntegrationTests;
 
 public sealed class DeliveryPointRepositoryTest : IClassFixture<DddSampleWebApplicationFactory>, IAsyncLifetime
 {

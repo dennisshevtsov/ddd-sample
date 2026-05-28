@@ -2,10 +2,11 @@
 using DddSample.Domain.DeliveryPoints;
 using DddSample.Domain.Merchants;
 using DddSample.Domain.Warehouses;
+using DddSample.Infrastructure.IntegrationTests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DddSample.Infrastructure.IntegrationTest.Merchants;
+namespace DddSample.Infrastructure.Merchants.IntegrationTests;
 
 public sealed class MerchantRepositoryTest : IClassFixture<DddSampleWebApplicationFactory>, IAsyncLifetime
 {
