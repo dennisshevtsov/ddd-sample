@@ -1,9 +1,10 @@
 ﻿using DddSample.Domain;
 using DddSample.Domain.Warehouses;
+using DddSample.Infrastructure.IntegrationTests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DddSample.Infrastructure.IntegrationTest.Warehouses;
+namespace DddSample.Infrastructure.Warehouses.IntegrationTests;
 
 public sealed class WarehouseRepositoryTest : IClassFixture<DddSampleWebApplicationFactory>, IAsyncLifetime
 {

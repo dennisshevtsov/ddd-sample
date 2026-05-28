@@ -7,7 +7,7 @@ using System.Net.Mime;
 namespace DddSample.Resources.Merchants;
 
 [ApiController]
-[Route("api/v1/merchant")]
+[Route("api/v1/merchants")]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
 public sealed class MerchantController : ControllerBase
