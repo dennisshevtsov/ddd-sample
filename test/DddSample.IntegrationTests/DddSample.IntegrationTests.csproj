@@ -8,6 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\DeliveryPoints\DeliveryPointControllerTestsInitialize.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\DeliveryPoints\DeliveryPointControllerTestsInitialize.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="10.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -31,7 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\DeliveryPoints\" />
     <Folder Include="Resources\Warehouses\" />
   </ItemGroup>
 

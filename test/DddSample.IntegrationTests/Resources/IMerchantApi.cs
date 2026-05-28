@@ -9,5 +9,5 @@ public interface IMerchantApi
   public Task<MerchantResource> Get(string id);
 
   [Post("/api/v1/merchants")]
-  public Task<MerchantResource> Create(string id);
+  public Task<MerchantResource> Create(MerchantResource resource);
 }

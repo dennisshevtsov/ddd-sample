@@ -17,6 +17,7 @@ public sealed class DddSampleWebApplicationFactory : WebApplicationFactory<Progr
     });
     builder.ConfigureServices(services =>
     {
+      services.AddScoped(provider => RestService.For<IDeliveryPointApi>("http://localhost:5001"));
       services.AddScoped(provider => RestService.For<IMerchantApi>("http://localhost:5001"));
     });
   }

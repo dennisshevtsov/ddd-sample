@@ -49,6 +49,8 @@ public sealed class MerchantControllerTest : IClassFixture<DddSampleWebApplicati
 
   public async ValueTask DisposeAsync()
   {
+    await _context.Set<DeliveryPoint>().ExecuteDeleteAsync();
+    await _context.Set<Warehouse>().ExecuteDeleteAsync();
     await _context.Set<Merchant>().ExecuteDeleteAsync();
     await _scope.DisposeAsync();
   }
